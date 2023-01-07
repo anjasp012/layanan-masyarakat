@@ -1,0 +1,98 @@
+@extends('layouts.app')
+
+@section('content')
+    @if (Request::routeIs('anggota.create.*'))
+        <h1 class="mt-4">Add Anggota</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('anggota.index') }}">Anggota</a></li>
+            <li class="breadcrumb-item">Add Anggota</li>
+        </ol>
+    @elseif (Request::routeis('staff.create.*'))
+        <h1 class="mt-4">Add Staff</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('staff.index') }}">Staff</a></li>
+            <li class="breadcrumb-item">Add Staff</li>
+        </ol>
+    @endif
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{{ route('anggota.store.step-1') }}" method="POST" novalidate>
+                @csrf
+                <div class="mb-3">
+                    <label for="nama_lengkap" class="form-label">{{ __('Nama Lengkap') }}</label>
+                    <input id="nama_lengkap" type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required autocomplete="name" autofocus>
+                    @error('nama_lengkap')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="nama_panggilan" class="form-label">{{ __('Nama Panggilan') }}</label>
+                    <input id="nama_panggilan" type="text" class="form-control @error('nama_panggilan') is-invalid @enderror" name="nama_panggilan" value="{{ old('nama_panggilan') }}" required autocomplete="name" autofocus>
+                    @error('nama_panggilan')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="nik" class="form-label">{{ __('NIK') }}</label>
+                    <input id="name" type="number" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{ old('nik') }}" required autocomplete="name" autofocus>
+                    @error('nik')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="tempat_lahir" class="form-label">{{ __('tempat_lahir') }}</label>
+                    <input id="tempat_lahir" type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required autocomplete="name" autofocus>
+                    @error('tempat_lahir')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="tanggal_lahir" class="form-label">{{ __('tanggal_lahir') }}</label>
+                    <input id="tanggal_lahir" type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required autocomplete="name" autofocus>
+                    @error('tanggal_lahir')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="jenis_Kelamin" class="form-label">{{ __('jenis_Kelamin') }}</label>
+                    <input id="jenis_Kelamin" type="text" class="form-control @error('jenis_Kelamin') is-invalid @enderror" name="jenis_Kelamin" value="{{ old('jenis_Kelamin') }}" required autocomplete="name" autofocus>
+                    @error('jenis_Kelamin')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="golongan_darah" class="form-label">{{ __('golongan_darah') }}</label>
+                    <input id="golongan_darah" type="text" class="form-control @error('golongan_darah') is-invalid @enderror" name="golongan_darah" value="{{ old('golongan_darah') }}" required autocomplete="name" autofocus>
+                    @error('golongan_darah')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success">Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
