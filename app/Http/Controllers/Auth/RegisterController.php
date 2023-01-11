@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\Agama;
+use App\Enums\GolonganDarah;
+use App\Enums\JenisKelamin;
+use App\Enums\Pekerjaan;
+use App\Enums\PendidikanTerakhir;
+use App\Enums\StatusPerkawinan;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\registerNotification;
@@ -39,8 +45,10 @@ class RegisterController extends Controller
 
     public function createStep1(Request $request)
     {
+        $jenisKelamin = JenisKelamin::getValues();
+        $golonganDarah = GolonganDarah::getValues();
         $registerUser = $request->session()->get('registerUser');
-        return view('auth.register.step-1', compact('registerUser'));
+        return view('auth.register.step-1', compact('registerUser', 'jenisKelamin', 'golonganDarah'));
     }
 
     public function storeStep1(Request $request)
@@ -51,7 +59,7 @@ class RegisterController extends Controller
             'nik' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
-            'jenis_Kelamin' => 'required',
+            'jenis_kelamin' => 'required',
             'golongan_darah' => 'required',
         ]);
 
@@ -71,10 +79,10 @@ class RegisterController extends Controller
     public function storeStep2(Request $request)
     {
         $inputVal = $request->validate([
-            'provinsi' => 'required',
-            'kota' => 'required',
-            'kecamatan' => 'required',
-            'kelurahan' => 'required',
+            'id_provinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
             'rt_rw' => 'required',
             'alamat_sesuai_ktp' => 'required',
             'alamat_saat_ini' => 'required',
@@ -88,8 +96,12 @@ class RegisterController extends Controller
 
     public function createStep3(Request $request)
     {
+        $agama = Agama::getValues();
+        $statusPerkawinan = StatusPerkawinan::getValues();
+        $pekerjaan = Pekerjaan::getValues();
+        $pendidikanTerakhir = PendidikanTerakhir::getValues();
         $registerUser = $request->session()->get('registerUser');
-        return view('auth.register.step-3', compact('registerUser'));
+        return view('auth.register.step-3', compact('registerUser', 'agama', 'statusPerkawinan', 'pekerjaan', 'pendidikanTerakhir'));
     }
 
     public function storeStep3(Request $request)
@@ -142,6 +154,8 @@ class RegisterController extends Controller
         if (!isset($registerUser->photo_diri)) {
             $request->validate([
                 'photo_diri' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'persetujuan1' => 'required',
+                'persetujuan2' => 'required',
             ]);
 
             $fileName = "photo_diri-" . time() . '.' . request()->photo_diri->getClientOriginalExtension();

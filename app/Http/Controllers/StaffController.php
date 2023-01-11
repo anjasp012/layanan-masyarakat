@@ -69,11 +69,11 @@ class StaffController extends Controller
             'nik' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
-            'jenis_Kelamin' => 'required',
+            'jenis_kelamin' => 'required',
             'golongan_darah' => 'required',
         ]);
 
-        $inputVal['role_id'] = '3';
+        $inputVal['role_id'] = '2';
         $inputVal['aktif'] = '1';
         $inputVal['no_kta'] = date('dm') .' ' .date('Y') .' ' .str_pad(User::next(), 4, '0', STR_PAD_LEFT);
 
@@ -98,10 +98,10 @@ class StaffController extends Controller
     public function storeStep2(Request $request)
     {
         $inputVal = $request->validate([
-            'provinsi' => 'required',
-            'kota' => 'required',
-            'kecamatan' => 'required',
-            'kelurahan' => 'required',
+            'id_provinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
             'rt_rw' => 'required',
             'alamat_sesuai_ktp' => 'required',
             'alamat_saat_ini' => 'required',
@@ -228,7 +228,35 @@ class StaffController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        $inputVal = $request->validate([
+            'nama_lengkap' => 'required',
+            'nama_panggilan' => 'required',
+            'nik' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'jenis_kelamin' => 'required',
+            'golongan_darah' => 'required',
+            'id_provinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
+            'rt_rw' => 'required',
+            'alamat_sesuai_ktp' => 'required',
+            'alamat_saat_ini' => 'required',
+            'agama' => 'required',
+            'status_perkawinan' => 'required',
+            'pekerjaan' => 'required',
+            'pendidikan_terakhir' => 'required',
+            'no_hp' => 'required',
+        ]);
+
+        try {
+            $user->update($inputVal);
+            return redirect(route('staff.index'));
+        } catch (\Exception $th) {
+            return redirect(route('staff.index'));
+        }
     }
 
     public function statusAktif(Request $request, $id)

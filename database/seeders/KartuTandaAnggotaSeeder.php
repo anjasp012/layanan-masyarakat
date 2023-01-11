@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Jabatan;
+use App\Models\KartuTandaAnggota;
 use Illuminate\Database\Seeder;
 
-class JabatanSeeder extends Seeder
+class KartuTandaAnggotaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,11 +14,9 @@ class JabatanSeeder extends Seeder
      */
     public function run()
     {
-        Jabatan::create([
-            'nama_jabatan' => 'DPD',
-        ]);
-        Jabatan::create([
-            'nama_jabatan' => 'DPP',
+        KartuTandaAnggota::create([
+            'kta_depan' => '1',
+            'kta_belakang' => '1',
         ]);
     }
 }

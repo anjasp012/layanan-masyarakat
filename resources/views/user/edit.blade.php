@@ -1,30 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mt-4">Edit Profile</h1>
+    @if (Request::routeIs('anggota.edit'))
+    <h1 class="mt-4">Edit Anggota</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Profile</a></li>
-        <li class="breadcrumb-item">Edit Profile</li>
+        <li class="breadcrumb-item">Edit Anggota</li>
     </ol>
+    @elseif (Request::routeIs('relawan.edit'))
+    <h1 class="mt-4">Edit Relawan</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item">Edit Relawan</li>
+    </ol>
+    @elseif (Request::routeIs('staff.edit'))
+    <h1 class="mt-4">Edit Staff</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item">Edit Staff</li>
+    </ol>
+    @endif
+
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ route('user.updateProfile') }}" method="POST" enctype="multipart/form-data">
+            @if (Request::routeIs('anggota.edit'))
+            <form action="{{ route('anggota.update', $user->id) }}" method="POST">
+            @elseif (Request::routeIs('relawan.edit'))
+            <form action="{{ route('relawan.update', $user->id) }}" method="POST">
+            @elseif (Request::routeIs('staff.edit'))
+            <form action="{{ route('staff.update', $user->id) }}" method="POST">
+            @endif
                 @csrf
                 @method('PATCH')
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="mb-3">
-                            <label for="nama_lengkap" class="form-label">Foto</label>
-                            <input type="file" name="photo_diri" class="form-control @error('photo_diri') is-invalid @enderror" value="{{ $user->photo_diri }}">
-                            @error('photo_diri')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="mb-3">
@@ -304,13 +311,13 @@
         });
         }$(function () {
         if ( $('#id_provinsi').val != "") {
-            onChangeSelect('{{ route("cities") }}', `{{ $user->id_provinsi }}`, 'id_kota', `{{ old('id_kota', $user->id_kota) }}`);
+            onChangeSelect('{{ route("cities") }}', `{{ old('id_provinsi', $user->id_provinsi) }}`, 'id_kota', `{{ old('id_kota', $user->id_kota) }}`);
         }
         if ( $('#id_kota').val != "") {
-            onChangeSelect('{{ route("districts") }}', `{{ $user->id_kota }}`, 'id_kecamatan', `{{ old('id_kecamatan', $user->id_kecamatan) }}`);
+            onChangeSelect('{{ route("districts") }}', `{{ old('id_kota', $user->id_kota) }}`, 'id_kecamatan', `{{ old('id_kecamatan', $user->id_kecamatan) }}`);
         }
         if ( $('#id_kecamatan').val != "") {
-            onChangeSelect('{{ route("villages") }}', `{{ $user->id_kecamatan }}`, 'id_kelurahan', `{{ old('id_kelurahan', $user->id_kelurahan) }}`);
+            onChangeSelect('{{ route("villages") }}', `{{ old('id_kecamatan', $user->id_kecamatan) }}`, 'id_kelurahan', `{{ old('id_kelurahan', $user->id_kelurahan) }}`);
         }
         $('#id_provinsi').on('change', function () {
             onChangeSelect('{{ route("cities") }}', $(this).val(), 'id_kota', `{{ old('id_kota', $user->id_kota) }}`);

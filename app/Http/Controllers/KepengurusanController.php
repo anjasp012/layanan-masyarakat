@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jabatan;
-use App\Models\User;
+use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
 
-class DppController extends Controller
+class KepengurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,7 @@ class DppController extends Controller
      */
     public function index()
     {
-        $data = [
-            'user' => User::where('role_id', 3)->where('kepengurusan_id', 1)->where('aktif', 1)->get(),
-            'actived' => 'Dpp',
-        ];
-        return view('user.index', $data);
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class DppController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Kepengurusan  $kepengurusan
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Kepengurusan $kepengurusan)
     {
         //
     }
@@ -57,10 +52,10 @@ class DppController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Kepengurusan  $kepengurusan
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Kepengurusan $kepengurusan)
     {
         //
     }
@@ -69,35 +64,21 @@ class DppController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Kepengurusan  $kepengurusan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Kepengurusan $kepengurusan)
     {
         //
-    }
-
-    public function updateJabatan(Request $request, $id)
-    {
-        $user = User::where('id', $id)->firstOrFail();
-        $inputVal = $request->validate([
-            'jabatan' => 'sometimes'
-        ]);
-        try {
-            $user->update($inputVal);
-            return redirect()->back();
-        } catch (\Exception $th) {
-            return redirect()->back();
-        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Kepengurusan  $kepengurusan
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Kepengurusan $kepengurusan)
     {
         //
     }

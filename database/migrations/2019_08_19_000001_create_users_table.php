@@ -16,7 +16,8 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_id')->constrained('role', 'id');
-            $table->foreignId('jabatan_id')->nullable()->constrained('jabatan', 'id');
+            $table->foreignId('kepengurusan_id')->nullable()->constrained('kepengurusan', 'id');
+            $table->string('jabatan')->nullable();
             $table->string('no_kta')->nullable()->unique();
             // data diri
             $table->string('nama_lengkap');
@@ -24,15 +25,15 @@ class CreateUsersTable extends Migration
             $table->string('nik');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
-            $table->string('jenis_Kelamin');
+            $table->string('jenis_kelamin');
             $table->string('golongan_darah');
             $table->string('photo_diri')->nullable();
 
             // alamat
-            $table->string('provinsi');
-            $table->string('kota');
-            $table->string('kecamatan');
-            $table->string('kelurahan');
+            $table->foreignId('id_provinsi')->constrained('indonesia_provinces', 'id');
+            $table->foreignId('id_kota')->constrained('indonesia_cities', 'id');
+            $table->foreignId('id_kecamatan')->constrained('indonesia_districts', 'id');
+            $table->foreignId('id_kelurahan')->constrained('indonesia_villages', 'id');
             $table->string('rt_rw');
             $table->string('alamat_sesuai_ktp');
             $table->string('alamat_saat_ini')->nullable();

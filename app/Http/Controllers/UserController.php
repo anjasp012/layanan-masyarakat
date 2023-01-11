@@ -15,6 +15,15 @@ class UserController extends Controller
     public function index()
     {
         $user = User::whereId(auth()->user()->id)->firstOrFail();
+        $provinsi = \Indonesia::findProvince($user->id_provinsi);
+        $kota = \Indonesia::findCity($user->id_kota);
+        $kecamatan = \Indonesia::findDistrict($user->id_kecamatan);
+        $kelurahan = \Indonesia::findVillage($user->id_kelurahan);
+        $user['provinsi'] = $provinsi->name;
+        $user['kota'] = $kota->name;
+        $user['kecamatan'] = $kecamatan->name;
+        $user['kelurahan'] = $kelurahan->name;
+        // dd($user);
         return view('profile.index', compact('user'));
     }
 
@@ -58,7 +67,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('profile.edit', compact('user'));
+        return view('user.edit', compact('user'));
     }
 
     public function editProfile()
@@ -83,12 +92,12 @@ class UserController extends Controller
             'nik' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
-            'jenis_Kelamin' => 'required',
+            'jenis_kelamin' => 'required',
             'golongan_darah' => 'required',
-            'provinsi' => 'required',
-            'kota' => 'required',
-            'kecamatan' => 'required',
-            'kelurahan' => 'required',
+            'id_provinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
             'rt_rw' => 'required',
             'alamat_sesuai_ktp' => 'required',
             'alamat_saat_ini' => 'required',
@@ -116,12 +125,12 @@ class UserController extends Controller
             'nik' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
-            'jenis_Kelamin' => 'required',
+            'jenis_kelamin' => 'required',
             'golongan_darah' => 'required',
-            'provinsi' => 'required',
-            'kota' => 'required',
-            'kecamatan' => 'required',
-            'kelurahan' => 'required',
+            'id_provinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
             'rt_rw' => 'required',
             'alamat_sesuai_ktp' => 'required',
             'alamat_saat_ini' => 'required',
@@ -131,6 +140,12 @@ class UserController extends Controller
             'pendidikan_terakhir' => 'required',
             'no_hp' => 'required',
         ]);
+
+        if ($request->has('photo_diri')) {
+            $photoDiri = "photo_diri-" . time() . '.' . 'png';
+            $request->photo_diri->storeAs('public/photo_diri', $photoDiri);
+            $inputVal['photo_diri'] = $photoDiri;
+        }
 
         try {
             $user->update($inputVal);

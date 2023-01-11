@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Agama;
+use App\Enums\GolonganDarah;
+use App\Enums\JenisKelamin;
+use App\Enums\Pekerjaan;
+use App\Enums\PendidikanTerakhir;
+use App\Enums\StatusPerkawinan;
 use App\Models\Jabatan;
+use App\Models\Kepengurusan;
 use App\Models\User;
 use App\Notifications\aktifasiNotification;
 use App\Notifications\nonAktifNotification;
@@ -26,7 +33,7 @@ class AnggotaController extends Controller
         $data = [
             'user' => User::where('role_id', 3)->where('aktif', 1)->get(),
             'actived' => 'Anggota Aktif',
-            'jabatan' => Jabatan::all()
+            'kepengurusan' => Kepengurusan::all()
         ];
         return view('user.index', $data);
     }
@@ -59,8 +66,10 @@ class AnggotaController extends Controller
 
     public function createStep1(Request $request)
     {
+        $jenisKelamin = JenisKelamin::getValues();
+        $golonganDarah = GolonganDarah::getValues();
         $registerUser = $request->session()->get('registerUser');
-        return view('user.create.step-1', compact('registerUser'));
+        return view('user.create.step-1', compact('registerUser', 'jenisKelamin', 'golonganDarah'));
     }
 
     public function storeStep1(Request $request)
@@ -71,7 +80,7 @@ class AnggotaController extends Controller
             'nik' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
-            'jenis_Kelamin' => 'required',
+            'jenis_kelamin' => 'required',
             'golongan_darah' => 'required',
         ]);
 
@@ -100,10 +109,10 @@ class AnggotaController extends Controller
     public function storeStep2(Request $request)
     {
         $inputVal = $request->validate([
-            'provinsi' => 'required',
-            'kota' => 'required',
-            'kecamatan' => 'required',
-            'kelurahan' => 'required',
+            'id_provinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
             'rt_rw' => 'required',
             'alamat_sesuai_ktp' => 'required',
             'alamat_saat_ini' => 'required',
@@ -117,8 +126,12 @@ class AnggotaController extends Controller
 
     public function createStep3(Request $request)
     {
+        $agama = Agama::getValues();
+        $statusPerkawinan = StatusPerkawinan::getValues();
+        $pekerjaan = Pekerjaan::getValues();
+        $pendidikanTerakhir = PendidikanTerakhir::getValues();
         $registerUser = $request->session()->get('registerUser');
-        return view('user.create.step-3', compact('registerUser'));
+        return view('user.create.step-3', compact('registerUser', 'agama', 'statusPerkawinan', 'pekerjaan', 'pendidikanTerakhir'));
     }
 
     public function storeStep3(Request $request)
@@ -207,7 +220,16 @@ class AnggotaController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        $provinsi = \Indonesia::findProvince($user->id_provinsi);
+        $kota = \Indonesia::findCity($user->id_kota);
+        $kecamatan = \Indonesia::findDistrict($user->id_kecamatan);
+        $kelurahan = \Indonesia::findVillage($user->id_kelurahan);
+        $user['provinsi'] = $provinsi->name;
+        $user['kota'] = $kota->name;
+        $user['kecamatan'] = $kecamatan->name;
+        $user['kelurahan'] = $kelurahan->name;
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -218,7 +240,41 @@ class AnggotaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        return view('user.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $inputVal = $request->validate([
+            'nama_lengkap' => 'required',
+            'nama_panggilan' => 'required',
+            'nik' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'jenis_kelamin' => 'required',
+            'golongan_darah' => 'required',
+            'id_provinsi' => 'required',
+            'id_kota' => 'required',
+            'id_kecamatan' => 'required',
+            'id_kelurahan' => 'required',
+            'rt_rw' => 'required',
+            'alamat_sesuai_ktp' => 'required',
+            'alamat_saat_ini' => 'required',
+            'agama' => 'required',
+            'status_perkawinan' => 'required',
+            'pekerjaan' => 'required',
+            'pendidikan_terakhir' => 'required',
+            'no_hp' => 'required',
+        ]);
+
+        try {
+            $user->update($inputVal);
+            return redirect(route('anggota.index'));
+        } catch (\Exception $th) {
+            return redirect(route('anggota.index'));
+        }
     }
 
     /**
@@ -253,6 +309,7 @@ class AnggotaController extends Controller
             'aktif' => 'required'
         ]);
         $inputVal['jabatan_id'] = null;
+        $inputVal['kepengurusan_id'] = null;
         try {
             $user->update($inputVal);
             Notification::route('mail', [
@@ -264,11 +321,11 @@ class AnggotaController extends Controller
         }
     }
 
-    public function updateJabatan(Request $request, $id)
+    public function updateKepengurusan(Request $request, $id)
     {
         $user = User::where('id', $id)->firstOrFail();
         $inputVal = $request->validate([
-            'jabatan_id' => 'required'
+            'kepengurusan_id' => 'required'
         ]);
         try {
             $user->update($inputVal);

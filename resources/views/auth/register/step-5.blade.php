@@ -95,7 +95,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="persetujuan1">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Dengan ini saya menyatakan bahwa saya MENYETUJUI AD / ART ORGANISASI
                                     </label>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" name="persetujuan2">
                                   <label class="form-check-label" for="flexCheckChecked">
                                     Saya menyatakan bahwa semua data yang tertulis di atas ini adalah benar dan saya bertanggung jawab penuh atas keabsahan data tersebut.
                                   </label>

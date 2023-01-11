@@ -71,9 +71,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="jenis_Kelamin" class="form-label">{{ __('jenis_Kelamin') }}</label>
-                    <input id="jenis_Kelamin" type="text" class="form-control @error('jenis_Kelamin') is-invalid @enderror" name="jenis_Kelamin" value="{{ old('jenis_Kelamin') }}" required autocomplete="name" autofocus>
-                    @error('jenis_Kelamin')
+                    <label for="jenis_kelamin" class="form-label">{{ __('jenis_kelamin') }}</label>
+                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-select @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin">
+                        <option value=""></option>
+                        @foreach ($jenisKelamin as $item)
+                            <option {{ (old('jenis_kelamin') == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                        @endforeach
+                    </select>
+                    @error('jenis_kelamin')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -82,7 +87,12 @@
 
                 <div class="mb-3">
                     <label for="golongan_darah" class="form-label">{{ __('golongan_darah') }}</label>
-                    <input id="golongan_darah" type="text" class="form-control @error('golongan_darah') is-invalid @enderror" name="golongan_darah" value="{{ old('golongan_darah') }}" required autocomplete="name" autofocus>
+                    <select name="golongan_darah" id="golongan_darah" class="form-select @error('golongan_darah') is-invalid @enderror" name="golongan_darah">
+                        <option value=""></option>
+                        @foreach ($golonganDarah as $item)
+                            <option {{ (old('golongan_darah') == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                        @endforeach
+                    </select>
                     @error('golongan_darah')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

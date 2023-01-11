@@ -7,7 +7,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
-                <a class="nav-link{{ Request::routeIs('kartuTandaAnggota') ? ' active' : '' }}" href="{{ route('kartuTandaAnggota') }}">
+                <a class="nav-link{{ Request::routeIs('kartuTandaAnggota') ? ' active' : '' }}" href="{{ route('kartuTandaAnggota.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Kartu Tanda Anggota
                 </a>

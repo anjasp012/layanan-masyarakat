@@ -12,9 +12,18 @@
             <form action="{{ route('anggota.store.step-2') }}" method="POST" novalidate>
                 @csrf
                 <div class="mb-3">
-                    <label for="provinsi" class="form-label text-md-end">{{ __('provinsi') }}</label>
-                    <input id="provinsi" type="text" class="form-control @error('provinsi') is-invalid @enderror" name="provinsi" value="{{ old('provinsi') }}" required autocomplete="name" autofocus>
-                    @error('provinsi')
+                    <label for="id_provinsi" class="form-label text-md-end">{{ __('id_provinsi') }}</label>
+                    @php
+                        $provinces = new App\Http\Controllers\DependantDropdownController;
+                        $provinces = $provinces->provinces();
+                    @endphp
+                    <select class="form-select @error('id_provinsi') is-invalid @enderror" name="id_provinsi" id="id_provinsi" required>
+                        <option></option>
+                        @foreach ($provinces as $item)
+                            <option {{ $item->id == old('id_provinsi' ? 'selected' : '') }} value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
+                        @endforeach
+                    </select>
+                    @error('id_provinsi')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -22,9 +31,11 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="kota" class="form-label text-md-end">{{ __('kota') }}</label>
-                    <input id="kota" type="text" class="form-control @error('kota') is-invalid @enderror" name="kota" value="{{ old('kota') }}" required autocomplete="name" autofocus>
-                    @error('kota')
+                    <label for="id_kota" class="form-label text-md-end">{{ __('id_kota') }}</label>
+                    <select class="form-select @error('id_kota') is-invalid @enderror" name="id_kota" id="id_kota" required>
+                        <option></option>
+                    </select>
+                    @error('id_kota')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -32,9 +43,11 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="kecamatan" class="form-label text-md-end">{{ __('kecamatan') }}</label>
-                    <input id="name" type="text" class="form-control @error('kecamatan') is-invalid @enderror" name="kecamatan" value="{{ old('kecamatan') }}" required autocomplete="name" autofocus>
-                    @error('kecamatan')
+                    <label for="id_kecamatan" class="form-label text-md-end">{{ __('id_kecamatan') }}</label>
+                    <select class="form-select @error('id_kecamatan') is-invalid @enderror" name="id_kecamatan" id="id_kecamatan" required>
+                        <option></option>
+                    </select>
+                    @error('id_kecamatan')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -42,9 +55,11 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="kelurahan" class="form-label text-md-end">{{ __('kelurahan') }}</label>
-                    <input id="kelurahan" type="text" class="form-control @error('kelurahan') is-invalid @enderror" name="kelurahan" value="{{ old('kelurahan') }}" required autocomplete="name" autofocus>
-                    @error('kelurahan')
+                    <label for="id_kelurahan" class="form-label text-md-end">{{ __('id_kelurahan') }}</label>
+                    <select class="form-select @error('id_kelurahan') is-invalid @enderror" name="id_kelurahan" id="id_kelurahan" required>
+                        <option></option>
+                    </select>
+                    @error('id_kelurahan')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -86,4 +101,34 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        function onChangeSelect(url, id, name) {
+        // send ajax request to get the cities of the selected province and append to the select tag
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+            id: id
+            },
+            success: function (data) {
+            $('#' + name).empty();
+            $('#' + name).append('<option></option>');
+            $.each(data, function (key, value) {
+                $('#' + name).append('<option value="' + key + '">' + value + '</option>');
+            });
+            }
+        });
+        }$(function () {
+        $('#id_provinsi').on('change selected', function () {
+            onChangeSelect('{{ route("cities") }}', $(this).val(), 'id_kota');
+        });$('#id_kota').on('change', function () {
+            onChangeSelect('{{ route("districts") }}', $(this).val(), 'id_kecamatan');
+        });$('#id_kecamatan').on('change', function () {
+            onChangeSelect('{{ route("villages") }}', $(this).val(), 'id_kelurahan');
+        });
+        });
+    </script>
 @endsection

@@ -16,9 +16,8 @@ class DpdController extends Controller
     public function index()
     {
         $data = [
-            'user' => User::where('role_id', 3)->where('jabatan_id', 1)->where('aktif', 1)->get(),
+            'user' => User::where('role_id', 3)->where('kepengurusan_id', 2)->where('aktif', 1)->get(),
             'actived' => 'Dpd',
-            'jabatan' => Jabatan::all()
         ];
         return view('user.index', $data);
     }
@@ -76,6 +75,19 @@ class DpdController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+    public function updateJabatan(Request $request, $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $inputVal = $request->validate([
+            'jabatan' => 'sometimes'
+        ]);
+        try {
+            $user->update($inputVal);
+            return redirect()->back();
+        } catch (\Exception $th) {
+            return redirect()->back();
+        }
     }
 
     /**

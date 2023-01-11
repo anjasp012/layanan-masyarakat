@@ -75,7 +75,8 @@ class RelawanController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -84,9 +85,44 @@ class RelawanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function edit($id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        return view('user.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $inputVal = $request->validate([
+            'nama_lengkap' => 'required',
+            'nama_panggilan' => 'required',
+            'nik' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'jenis_Kelamin' => 'required',
+            'golongan_darah' => 'required',
+            'provinsi' => 'required',
+            'kota' => 'required',
+            'kecamatan' => 'required',
+            'kelurahan' => 'required',
+            'rt_rw' => 'required',
+            'alamat_sesuai_ktp' => 'required',
+            'alamat_saat_ini' => 'required',
+            'agama' => 'required',
+            'status_perkawinan' => 'required',
+            'pekerjaan' => 'required',
+            'pendidikan_terakhir' => 'required',
+            'no_hp' => 'required',
+        ]);
+
+        try {
+            $user->update($inputVal);
+            return redirect(route('relawan.index'));
+        } catch (\Exception $th) {
+            return redirect(route('relawan.index'));
+        }
     }
 
     /**

@@ -1,23 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mt-4">Profile</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item">Profile</li>
-    </ol>
+    @if (Request::routeIs('anggota.show'))
+        <h1 class="mt-4">Detail Anggota</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item">Detail Anggota</li>
+        </ol>
+    @elseif (Request::routeIs('relawan.show'))
+        <h1 class="mt-4">Detail Relawan</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item">Detail Relawan</li>
+        </ol>
+    @elseif (Request::routeIs('staff.show'))
+        <h1 class="mt-4">Detail Staff</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item">Detail Staff</li>
+        </ol>
+    @endif
     <div class="row">
         <div class="col-md-12">
             <form action="" method="POST">
                 @csrf
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="mb-3">
-                            <label for="photo_diri" class="form-label d-block">Foto</label>
-                            <img src="{{ asset('storage/photo_diri/'.$user->photo_diri) }}" alt="">
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="mb-3">
@@ -208,7 +214,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="d-flex justify-content-end">
-                            <a href="{{ route('user.editProfile') }}" class="btn btn-warning">Edit</a>
+                            @if (Request::routeIs('anggota.*'))
+                                <a class="btn btn-warning btn-sm" href="{{ route('anggota.edit', $user->id) }}">Edit</a>
+                            @elseif (Request::routeIs('staff.*'))
+                                <a class="btn btn-warning btn-sm" href="{{ route('staff.edit', $user->id) }}">Edit</a>
+                            @elseif (Request::routeIs('relawan.*'))
+                                <a class="btn btn-warning btn-sm" href="{{ route('relawan.edit', $user->id) }}">Edit</a>
+                            @endif
                         </div>
                     </div>
                 </div>

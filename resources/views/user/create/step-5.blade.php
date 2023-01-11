@@ -30,7 +30,7 @@
                                 <td class="w-25 fw-bold">Tanggal Lahir</td>
                                 <td class="w-25">{{ $registerUser->tanggal_lahir }}</td>
                                 <td class="w-25 fw-bold">Jenis Kelamin</td>
-                                <td class="w-25">{{ $registerUser->jenis_Kelamin }}</td>
+                                <td class="w-25">{{ $registerUser->jenis_kelamin }}</td>
                             </tr>
                             <tr>
                                 <td class="w-25 fw-bold">Golongan Darah</td>

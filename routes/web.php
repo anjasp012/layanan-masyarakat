@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\DependantDropdownController;
 use App\Http\Controllers\DpdController;
 use App\Http\Controllers\DppController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KartuTandaAnggotaController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\RelawanController;
@@ -24,6 +26,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
+
+Route::get('provinces', [DependantDropdownController::class, 'provinces'])->name('provinces');
+Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities');
+Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts');
+Route::get('villages', [DependantDropdownController::class, 'villages'])->name('villages');
+
 Route::group(['middleware' => ['guest']], function () {
     Route::get('register', [RegisterController::class, 'createStep0'])->name('register.create.step-0');
     Route::post('register', [RegisterController::class, 'storeStep0'])->name('register.store.step-0');
@@ -47,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('user', UserController::class);
 
     Route::group(['middleware' => ['role:1,2']], function () {
+        Route::resource('jabatan', JabatanController::class);
         Route::get('tambah-anggota/1', [AnggotaController::class, 'createStep1'])->name('anggota.create.step-1');
         Route::post('tambah-anggota/1', [AnggotaController::class, 'storeStep1'])->name('anggota.store.step-1');
         Route::get('tambah-anggota/2', [AnggotaController::class, 'createStep2'])->name('anggota.create.step-2');
@@ -60,7 +69,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('anggota-non-aktif', [AnggotaController::class, 'userNonAktif'])->name('anggota.userNonAktif');
         Route::get('anggota-pending', [AnggotaController::class, 'userPending'])->name('anggota.userPending');
         Route::resource('anggota', AnggotaController::class)->except('create');
-        Route::match(['patch', 'put'], 'anggota/{anggotum}/updateJabatan', [AnggotaController::class, 'updateJabatan'])->name('anggota.updateJabatan');
+        Route::match(['patch', 'put'], 'anggota/{anggotum}/updateKepengurusan', [AnggotaController::class, 'updateKepengurusan'])->name('anggota.updateKepengurusan');
         Route::match(['patch', 'put'], 'anggota/{anggotum}/statusAktif', [AnggotaController::class, 'statusAktif'])->name('anggota.statusAktif');
         Route::match(['patch', 'put'], 'anggota/{anggotum}/statusNonAktif', [AnggotaController::class, 'statusNonAktif'])->name('anggota.statusNonAktif');
 
@@ -71,7 +80,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::match(['patch', 'put'], 'relawan/{relawan}/statusNonAktif', [RelawanController::class, 'statusNonAktif'])->name('relawan.statusNonAktif');
 
         Route::resource('dpd', DpdController::class)->only('index');
+        Route::match(['patch', 'put'], 'dpd/{dpd}/updateJabatan', [DpdController::class, 'updateJabatan'])->name('dpd.updateJabatan');
         Route::resource('dpp', DppController::class)->only('index');
+        Route::match(['patch', 'put'], 'dpp/{dpp}/updateJabatan', [DppController::class, 'updateJabatan'])->name('dpp.updateJabatan');
 
         Route::get('tambah-staff/1', [StaffController::class, 'createStep1'])->name('staff.create.step-1');
         Route::post('tambah-staff/1', [StaffController::class, 'storeStep1'])->name('staff.store.step-1');
@@ -90,5 +101,5 @@ Route::group(['middleware' => ['auth']], function () {
         Route::match(['patch', 'put'], 'staff/{staff}/statusNonAktif', [StaffController::class, 'statusNonAktif'])->name('staff.statusNonAktif');
     });
     Route::resource('pengumuman', PengumumanController::class);
-    Route::get('kartu-tanda-anggota', KartuTandaAnggotaController::class)->name('kartuTandaAnggota');
+    Route::resource('kartuTandaAnggota', KartuTandaAnggotaController::class);
 });

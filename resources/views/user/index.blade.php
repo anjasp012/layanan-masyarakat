@@ -17,7 +17,10 @@
                             <th>No Kta</th>
                         @endif
                         @if (Request::routeIs('anggota.index'))
-                            <th>Jabatan/Pengurus</th>
+                            <th>Kepengurus</th>
+                        @endif
+                        @if (Request::routeIs('dpp.index') || Request::routeIs('dpd.index'))
+                            <th>jabatan</th>
                         @endif
                         <th>Alamat</th>
                         <th>Status</th>
@@ -35,19 +38,40 @@
                             @if (Request::routeIs('anggota.index'))
                                 <td>
                                     <div id="inputReadonly{{ $data->id }}" class="d-flex gap-1">
-                                        <input readonly type="text" class="form-control form-control-sm w-50" value="{{ ($data->jabatan_id) ? $data->jabatan->nama_jabatan : '' }}">
-                                        <button class="btn btn-warning btn-sm" onclick="ubahJabatan({{ $data->id }})">Ubah Jabatan</button>
+                                        <input readonly type="text" class="form-control form-control-sm w-50" value="{{ ($data->kepengurusan) ? $data->kepengurusan->nama_kepengurusan : '' }}">
+                                        <button class="btn btn-warning btn-sm" onclick="ubahKepengurusan({{ $data->id }})">Ubah Kepengurusan</button>
                                     </div>
-                                    <form id="formJabatan{{ $data->id }}" action="{{ route('anggota.updateJabatan', $data->id) }}" method="POST" class="d-none">
+                                    <form id="formKepengurusan{{ $data->id }}" action="{{ route('anggota.updateKepengurusan', $data->id) }}" method="POST" class="d-none">
                                         @csrf
                                         @method('PATCH')
                                         <div class="d-flex gap-1">
-                                            <select name="jabatan_id" id="jabatan_id" class="form-select form-select-sm w-50">
-                                                    <option value=""></option>
-                                                @foreach ($jabatan as $item)
-                                                    <option {{ ( $item->id == $data->jabatan_id) ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->nama_jabatan }}</option>
+                                            <select name="kepengurusan_id" id="kepengurusan_id" class="form-select form-select-sm w-50">
+                                                    <option value=null></option>
+                                                @foreach ($kepengurusan as $item)
+                                                    <option {{ ( $item->id == $data->kepengurusan_id) ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->nama_kepengurusan }}</option>
                                                 @endforeach
                                             </select>
+                                            <button type="button" class="btn btn-secondary btn-sm" onclick="batalUbahKepengurusan({{ $data->id }})">Batal</button>
+                                            <button type="submit" class="btn btn-success btn-sm">Simpan</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            @endif
+                            @if (Request::routeIs('dpp.index') || Request::routeIs('dpd.index'))
+                                <td>
+                                    <div id="inputReadonlyJabatan{{ $data->id }}" class="d-flex gap-1">
+                                        <input readonly type="text" class="form-control form-control-sm w-50" value="{{ ($data->jabatan) ? $data->jabatan : '' }}">
+                                        <button class="btn btn-warning btn-sm" onclick="ubahJabatan({{ $data->id }})">Ubah jabatan</button>
+                                    </div>
+                                    @if (Request::routeIs('dpp.index'))
+                                        <form id="formJabatan{{ $data->id }}" action="{{ route('dpp.updateJabatan', $data->id) }}" method="POST" class="d-none">
+                                    @elseif (Request::routeIs('dpd.index'))
+                                        <form id="formJabatan{{ $data->id }}" action="{{ route('dpd.updateJabatan', $data->id) }}" method="POST" class="d-none">
+                                    @endif
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="d-flex gap-1">
+                                            <input type="text" name="jabatan" class="form-control form-control-sm w-50" value="{{ $data->jabatan }}">
                                             <button type="button" class="btn btn-secondary btn-sm" onclick="batalUbahJabatan({{ $data->id }})">Batal</button>
                                             <button type="submit" class="btn btn-success btn-sm">Simpan</button>
                                         </div>
@@ -65,16 +89,26 @@
                             <td>
                                 @if ($data->aktif == 1)
                                     @if (Request::routeIs('anggota.*'))
-                                        <form class="d-inline-block" action="{{ route('anggota.statusNonAktif', $data->id) }}" method="POST">
+                                        <form action="{{ route('anggota.statusNonAktif', $data->id) }}" method="POST">
                                     @elseif (Request::routeIs('staff.*'))
-                                        <form class="d-inline-block" action="{{ route('staff.statusNonAktif', $data->id) }}" method="POST">
+                                        <form action="{{ route('staff.statusNonAktif', $data->id) }}" method="POST">
                                     @elseif (Request::routeIs('relawan.*'))
-                                        <form class="d-inline-block" action="{{ route('relawan.statusNonAktif', $data->id) }}" method="POST">
+                                        <form action="{{ route('relawan.statusNonAktif', $data->id) }}" method="POST">
                                     @endif
                                         @csrf
                                         @method('PATCH')
                                         <input type="text" name="aktif" value="0" hidden>
                                         <button type="submit" class="btn btn-sm btn-danger">NonAktifkan</button>
+                                        @if (Request::routeIs('anggota.*'))
+                                            <a class="btn btn-warning btn-sm" href="{{ route('anggota.edit', $data->id) }}">Edit</a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('anggota.show', $data->id) }}">Detail</a>
+                                        @elseif (Request::routeIs('staff.*'))
+                                            <a class="btn btn-warning btn-sm" href="{{ route('staff.edit', $data->id) }}">Edit</a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('staff.show', $data->id) }}">Detail</a>
+                                        @elseif (Request::routeIs('relawan.*'))
+                                            <a class="btn btn-warning btn-sm" href="{{ route('relawan.edit', $data->id) }}">Edit</a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('relawan.show', $data->id) }}">Detail</a>
+                                        @endif
                                     </form>
                                 @else
                                     @if (Request::routeIs('anggota.*'))
@@ -88,6 +122,16 @@
                                             @method('PATCH')
                                             <input type="text" name="aktif" value="1" hidden>
                                             <button type="submit" class="btn btn-sm btn-success">Aktifkan</button>
+                                            @if (Request::routeIs('anggota.*'))
+                                                <a class="btn btn-warning btn-sm" href="{{ route('anggota.edit', $data->id) }}">Edit</a>
+                                                <a class="btn btn-info btn-sm" href="{{ route('anggota.show', $data->id) }}">Detail</a>
+                                            @elseif (Request::routeIs('staff.*'))
+                                                <a class="btn btn-warning btn-sm" href="{{ route('staff.edit', $data->id) }}">Edit</a>
+                                                <a class="btn btn-info btn-sm" href="{{ route('staff.show', $data->id) }}">Detail</a>
+                                            @elseif (Request::routeIs('relawan.*'))
+                                                <a class="btn btn-warning btn-sm" href="{{ route('relawan.edit', $data->id) }}">Edit</a>
+                                                <a class="btn btn-info btn-sm" href="{{ route('relawan.show', $data->id) }}">Detail</a>
+                                            @endif
                                         </form>
                                 @endif
                             </td>
@@ -101,18 +145,31 @@
 
 @section('script')
     <script>
-        function ubahJabatan(params) {
-            console.log('formJabatan' +params);
-            var form = document.getElementById('formJabatan' +params);
+        function ubahKepengurusan(params) {
+            console.log('formKepengurusan' +params);
+            var form = document.getElementById('formKepengurusan' +params);
             var inputReadonly = document.getElementById('inputReadonly' +params);
             form.classList.remove("d-none");
             inputReadonly.classList.add("d-none");
         }
-        function batalUbahJabatan(params) {
-            var form = document.getElementById('formJabatan' +params);
+        function batalUbahKepengurusan(params) {
+            var form = document.getElementById('formKepengurusan' +params);
             var inputReadonly = document.getElementById('inputReadonly' +params);
             form.classList.add("d-none");
             inputReadonly.classList.remove("d-none");
+        }
+        function ubahJabatan(params) {
+            console.log('formJabatan' +params);
+            var form = document.getElementById('formJabatan' +params);
+            var inputReadonlyJabatan = document.getElementById('inputReadonlyJabatan' +params);
+            form.classList.remove("d-none");
+            inputReadonlyJabatan.classList.add("d-none");
+        }
+        function batalUbahJabatan(params) {
+            var form = document.getElementById('formJabatan' +params);
+            var inputReadonlyJabatan = document.getElementById('inputReadonlyJabatan' +params);
+            form.classList.add("d-none");
+            inputReadonlyJabatan.classList.remove("d-none");
         }
     </script>
 @endsection
