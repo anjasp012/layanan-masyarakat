@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jabatan;
+use App\Enums\Agama;
+use App\Enums\GolonganDarah;
+use App\Enums\JenisKelamin;
+use App\Enums\Pekerjaan;
+use App\Enums\PendidikanTerakhir;
+use App\Enums\StatusPerkawinan;
 use App\Models\User;
 use App\Notifications\aktifasiNotification;
 use App\Notifications\nonAktifNotification;
@@ -35,7 +40,6 @@ class StaffController extends Controller
         $data = [
             'user' => User::where('role_id', 2)->where('aktif', 0)->get(),
             'actived' => 'Staff NonAktif',
-            'jabatan' => Jabatan::all()
         ];
         return view('user.index', $data);
     }
@@ -45,7 +49,6 @@ class StaffController extends Controller
         $data = [
             'user' => User::where('role_id', 2)->where('aktif', 2)->get(),
             'actived' => 'Staff Pending',
-            'jabatan' => Jabatan::all()
         ];
         return view('user.index', $data);
     }
@@ -57,8 +60,10 @@ class StaffController extends Controller
      */
     public function createStep1(Request $request)
     {
+        $jenisKelamin = JenisKelamin::getValues();
+        $golonganDarah = GolonganDarah::getValues();
         $registerUser = $request->session()->get('registerUser');
-        return view('user.create.step-1', compact('registerUser'));
+        return view('user.create.step-1', compact('registerUser', 'jenisKelamin', 'golonganDarah'));
     }
 
     public function storeStep1(Request $request)
@@ -86,7 +91,7 @@ class StaffController extends Controller
             $registerUser->fill($inputVal);
             $request->session()->put('registerUser', $registerUser);
         }
-        return redirect()->route('anggota.create.step-2');
+        return redirect()->route('staff.create.step-2');
     }
 
     public function createStep2(Request $request)
@@ -110,13 +115,17 @@ class StaffController extends Controller
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
         $request->session()->put('registerUser', $registerUser);
-        return redirect()->route('anggota.create.step-3');
+        return redirect()->route('staff.create.step-3');
     }
 
     public function createStep3(Request $request)
     {
+        $agama = Agama::getValues();
+        $statusPerkawinan = StatusPerkawinan::getValues();
+        $pekerjaan = Pekerjaan::getValues();
+        $pendidikanTerakhir = PendidikanTerakhir::getValues();
         $registerUser = $request->session()->get('registerUser');
-        return view('user.create.step-3', compact('registerUser'));
+        return view('user.create.step-3', compact('registerUser', 'agama', 'statusPerkawinan', 'pekerjaan', 'pendidikanTerakhir'));
     }
 
     public function storeStep3(Request $request)
@@ -131,7 +140,7 @@ class StaffController extends Controller
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
         $request->session()->put('registerUser', $registerUser);
-        return redirect()->route('anggota.create.step-4');
+        return redirect()->route('staff.create.step-4');
     }
 
     public function createStep4(Request $request)
@@ -154,13 +163,23 @@ class StaffController extends Controller
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
         $request->session()->put('registerUser', $registerUser);
-        return redirect()->route('anggota.create.step-5');
+        return redirect()->route('staff.create.step-5');
     }
 
     public function createStep5(Request $request)
     {
         $registerUser = $request->session()->get('registerUser');
-        return view('user.create.step-5', compact('registerUser'));
+        $provinsi = \Indonesia::findProvince($registerUser->id_provinsi);
+        $kota = \Indonesia::findCity($registerUser->id_kota);
+        $kecamatan = \Indonesia::findDistrict($registerUser->id_kecamatan);
+        $kelurahan = \Indonesia::findVillage($registerUser->id_kelurahan);
+        $laravolt = [
+            'provinsi' => $provinsi->name,
+            'kota' => $kota->name,
+            'kecamatan' => $kecamatan->name,
+            'kelurahan' => $kelurahan->name,
+        ];
+        return view('user.create.step-5', compact('registerUser', 'laravolt'));
     }
 
     public function storeStep5(Request $request)
@@ -282,7 +301,7 @@ class StaffController extends Controller
         $inputVal = $request->validate([
             'aktif' => 'required'
         ]);
-        $inputVal['jabatan_id'] = null;
+        $inputVal['jabatan'] = null;
         try {
             $user->update($inputVal);
             Notification::route('mail', [

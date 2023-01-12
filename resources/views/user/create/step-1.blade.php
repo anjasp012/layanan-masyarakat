@@ -18,7 +18,11 @@
     @endif
     <div class="row">
         <div class="col-md-6">
-            <form action="{{ route('anggota.store.step-1') }}" method="POST" novalidate>
+            @if (Request::routeIs('anggota.create.*'))
+                <form action="{{ route('anggota.store.step-1') }}" method="POST" novalidate>
+            @elseif (Request::routeis('staff.create.*'))
+                <form action="{{ route('staff.store.step-1') }}" method="POST" novalidate>
+            @endif
                 @csrf
                 <div class="mb-3">
                     <label for="nama_lengkap" class="form-label">{{ __('Nama Lengkap') }}</label>

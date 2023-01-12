@@ -1,15 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (Request::routeIs('anggota.create.*'))
     <h1 class="mt-4">Add Anggota</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{{ route('anggota.index') }}">Anggota</a></li>
         <li class="breadcrumb-item">Add Anggota</li>
     </ol>
+    @elseif (Request::routeis('staff.create.*'))
+    <h1 class="mt-4">Add Staff</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('staff.index') }}">Staff</a></li>
+        <li class="breadcrumb-item">Add Staff</li>
+    </ol>
+    @endif
     <div class="row">
-        <div class="col-md-8">
-            <form action="{{ route('anggota.store.step-5') }}" method="POST" novalidate enctype="multipart/form-data">
+        <div class="col-md-6">
+            @if (Request::routeIs('anggota.create.*'))
+                <form action="{{ route('anggota.store.step-5') }}" method="POST" novalidate enctype="multipart/form-data">
+            @elseif (Request::routeis('staff.create.*'))
+                <form action="{{ route('staff.store.step-5') }}" method="POST" novalidate enctype="multipart/form-data">
+            @endif
                 @csrf
                 <div class="row">
                     <table class="table col-md-6">
@@ -36,17 +49,17 @@
                                 <td class="w-25 fw-bold">Golongan Darah</td>
                                 <td class="w-25">{{ $registerUser->golongan_darah }}</td>
                                 <td class="w-25 fw-bold">Provinsi</td>
-                                <td class="w-25">{{ $registerUser->provinsi }}</td>
+                                <td class="w-25">{{ $laravolt['provinsi'] }}</td>
                             </tr>
                             <tr>
                                 <td class="w-25 fw-bold">Kota</td>
-                                <td class="w-25">{{ $registerUser->kota }}</td>
+                                <td class="w-25">{{ $laravolt['kota'] }}</td>
                                 <td class="w-25 fw-bold">Kecamatan</td>
-                                <td class="w-25">{{ $registerUser->kecamatan }}</td>
+                                <td class="w-25">{{ $laravolt['kecamatan'] }}</td>
                             </tr>
                             <tr>
                                 <td class="w-25 fw-bold">Kelurahan</td>
-                                <td class="w-25">{{ $registerUser->kelurahan }}</td>
+                                <td class="w-25">{{ $laravolt['kelurahan'] }}</td>
                                 <td class="w-25 fw-bold">Rt Rw</td>
                                 <td class="w-25">{{ $registerUser->rt_rw }}</td>
                             </tr>
@@ -82,7 +95,6 @@
                     <label for="photo_diri" class="form-label">{{ __('photo_diri') }}</label>
 
                     <div class="col-md-6">
-                        {{-- <input type="file" id="image" name="image[]" multiple /><br/> --}}
                         <div id="frames"></div>
                         <input id="photo_diri" type="file" class="form-control @error('photo_diri') is-invalid @enderror" name="photo_diri" value="{{ old('photo_diri') }}" required autocomplete="name" autofocus>
                         @error('photo_diri')

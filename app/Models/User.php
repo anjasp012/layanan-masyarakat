@@ -20,7 +20,7 @@ class User extends Authenticatable
     // protected $guarded = ['id'];
 
     protected $fillable = [
-        'role_id', 'jabatan', 'kepengurusan_id', 'no_kta', 'nama_lengkap', 'aktif', 'nama_panggilan', 'nik', 'tempat_lahir', 'tanggal_lahir', 'jenis_Kelamin', 'golongan_darah', 'photo_diri', 'id_provinsi', 'id_kota', 'id_kecamatan', 'id_kelurahan', 'rt_rw', 'alamat_sesuai_ktp', 'alamat_saat_ini', 'agama', 'status_perkawinan', 'pekerjaan', 'pendidikan_terakhir', 'email', 'no_hp', 'password',
+        'role_id', 'jabatan', 'kepengurusan_id', 'no_kta', 'nama_lengkap', 'aktif', 'nama_panggilan', 'nik', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'golongan_darah', 'photo_diri', 'id_provinsi', 'id_kota', 'id_kecamatan', 'id_kelurahan', 'rt_rw', 'alamat_sesuai_ktp', 'alamat_saat_ini', 'agama', 'status_perkawinan', 'pekerjaan', 'pendidikan_terakhir', 'email', 'no_hp', 'password',
     ];
 
     /**

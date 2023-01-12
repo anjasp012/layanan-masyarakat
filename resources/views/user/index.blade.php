@@ -13,7 +13,7 @@
                     <tr>
                         <th style="width: 1px">No</th>
                         <th>Nama</th>
-                        @if (Request::routeIs('anggota.index') || Request::routeIs('dpp.index') || Request::routeIs('dpd.index'))
+                        @if (Request::routeIs('anggota.index') || Request::routeIs('dpp.index') || Request::routeIs('dpd.index') || Request::routeIs('relawan.index') || Request::routeIs('staff.index'))
                             <th>No Kta</th>
                         @endif
                         @if (Request::routeIs('anggota.index'))
@@ -32,7 +32,7 @@
                         <tr>
                             <td style="width: 1px" class="text-center">{{ $index+1 }}</td>
                             <td>{{ $data->nama_lengkap }}</td>
-                            @if (Request::routeIs('anggota.index') || Request::routeIs('dpp.index') || Request::routeIs('dpd.index'))
+                            @if (Request::routeIs('anggota.index') || Request::routeIs('dpp.index') || Request::routeIs('dpd.index') || Request::routeIs('relawan.index') || Request::routeIs('staff.index'))
                                 <td>{{ $data->no_kta }}</td>
                             @endif
                             @if (Request::routeIs('anggota.index'))

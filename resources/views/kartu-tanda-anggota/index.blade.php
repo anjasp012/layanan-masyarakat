@@ -44,34 +44,36 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-4 mb-3">
-                <form action="{{ route('kartuTandaAnggota.update', $kta->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PATCH')
-                    <div class="mb-3">
-                        <label for="kta_depan" class="form-label fw-bold">Ubah Template Depan</label>
-                        <input type="file" class="form-control" id="kta_depan" name="kta_depan">
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
+        @if (auth()->user()->role_id == 1)
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <form action="{{ route('kartuTandaAnggota.update', $kta->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PATCH')
+                        <div class="mb-3">
+                            <label for="kta_depan" class="form-label fw-bold">Ubah Template Depan</label>
+                            <input type="file" class="form-control" id="kta_depan" name="kta_depan">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <form action="{{ route('kartuTandaAnggota.update', $kta->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PATCH')
+                        <div class="mb-3">
+                            <label for="kta_belakang" class="form-label fw-bold">Ubah Template Belakang</label>
+                            <input type="file" class="form-control" id="kta_belakang" name="kta_belakang">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <form action="{{ route('kartuTandaAnggota.update', $kta->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PATCH')
-                    <div class="mb-3">
-                        <label for="kta_belakang" class="form-label fw-bold">Ubah Template Belakang</label>
-                        <input type="file" class="form-control" id="kta_belakang" name="kta_belakang">
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        @endif
     </div>
 </div>
 @endsection

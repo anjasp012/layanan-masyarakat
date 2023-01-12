@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="no_hp" class="col-md-4 col-form-label text-md-end">{{ __('no_hp Address') }}</label>
+                            <label for="no_hp" class="col-md-4 col-form-label text-md-end">{{ __('No hp') }}</label>
 
                             <div class="col-md-6">
                                 <input id="no_hp" type="number" class="form-control @error('no_hp') is-invalid @enderror" name="no_hp" value="{{ old('no_hp') }}" required autocomplete="no_hp">

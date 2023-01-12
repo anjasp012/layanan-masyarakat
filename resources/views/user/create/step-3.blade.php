@@ -1,15 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mt-4">Add Anggota</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('anggota.index') }}">Anggota</a></li>
-        <li class="breadcrumb-item">Add Anggota</li>
-    </ol>
-    <div class="row">
-        <div class="col-md-6">
+@if (Request::routeIs('anggota.create.*'))
+<h1 class="mt-4">Add Anggota</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('anggota.index') }}">Anggota</a></li>
+    <li class="breadcrumb-item">Add Anggota</li>
+</ol>
+@elseif (Request::routeis('staff.create.*'))
+<h1 class="mt-4">Add Staff</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('staff.index') }}">Staff</a></li>
+    <li class="breadcrumb-item">Add Staff</li>
+</ol>
+@endif
+<div class="row">
+    <div class="col-md-6">
+        @if (Request::routeIs('anggota.create.*'))
             <form action="{{ route('anggota.store.step-3') }}" method="POST" novalidate>
+        @elseif (Request::routeis('staff.create.*'))
+            <form action="{{ route('staff.store.step-3') }}" method="POST" novalidate>
+        @endif
                 @csrf
                 <div class="mb-3">
                     <label for="agama" class="form-label">{{ __('agama') }}</label>

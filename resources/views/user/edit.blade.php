@@ -35,6 +35,19 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="mb-3">
+                            <label for="nama_lengkap" class="form-label">Foto</label>
+                            <input type="file" name="photo_diri" class="form-control @error('photo_diri') is-invalid @enderror" value="{{ $user->photo_diri }}">
+                            @error('photo_diri')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="mb-3">
                             <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
                             <input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ $user->nama_lengkap }}">
                             @error('nama_lengkap')
@@ -108,7 +121,12 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                            <input type="text" name="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror" value="{{ $user->jenis_kelamin }}">
+                            <select name="jenis_kelamin" id="jenis_kelamin" class="form-select @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin">
+                                <option value=""></option>
+                                @foreach ($jenisKelamin as $item)
+                                    <option {{ (old('jenis_kelamin', $user->jenis_kelamin) == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                                @endforeach
+                            </select>
                             @error('jenis_kelamin')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -119,7 +137,12 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="golongan_darah" class="form-label">Golongan Darah</label>
-                            <input type="text" name="golongan_darah" class="form-control @error('golongan_darah') is-invalid @enderror" value="{{ $user->golongan_darah }}">
+                            <select name="golongan_darah" id="golongan_darah" class="form-select @error('golongan_darah') is-invalid @enderror" name="golongan_darah">
+                                <option value=""></option>
+                                @foreach ($golonganDarah as $item)
+                                    <option {{ (old('golongan_darah', $user->golongan_darah) == strtoupper($item)) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                                @endforeach
+                            </select>
                             @error('golongan_darah')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -132,7 +155,12 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="agama" class="form-label">Agama</label>
-                            <input type="text" name="agama" class="form-control @error('agama') is-invalid @enderror" value="{{ $user->agama }}">
+                            <select name="agama" id="agama" class="form-select @error('agama') is-invalid @enderror" name="agama">
+                                <option value=""></option>
+                                @foreach ($agama as $item)
+                                    <option {{ (old('agama', $user->agama) == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                                @endforeach
+                            </select>
                             @error('agama')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -143,7 +171,12 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="status_perkawinan" class="form-label">Status Perkawinan</label>
-                            <input type="text" name="status_perkawinan" class="form-control @error('status_perkawinan') is-invalid @enderror" value="{{ $user->status_perkawinan }}">
+                            <select name="status_perkawinan" id="status_perkawinan" class="form-select @error('status_perkawinan') is-invalid @enderror" name="status_perkawinan">
+                                <option value=""></option>
+                                @foreach ($statusPerkawinan as $item)
+                                    <option {{ (old('status_perkawinan', $user->status_perkawinan) == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                                @endforeach
+                            </select>
                             @error('status_perkawinan')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -156,7 +189,12 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="pendidikan_terakhir" class="form-label">Pendidikan Terakhir</label>
-                            <input type="text" name="pendidikan_terakhir" class="form-control @error('pendidikan_terakhir') is-invalid @enderror" value="{{ $user->pendidikan_terakhir }}">
+                            <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-select @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir">
+                                <option value=""></option>
+                                @foreach ($pendidikanTerakhir as $item)
+                                    <option {{ (old('pendidikan_terakhir', $user->pendidikan_terakhir) == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                                @endforeach
+                            </select>
                             @error('pendidikan_terakhir')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -167,7 +205,12 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label for="pekerjaan" class="form-label">Pekerjaan</label>
-                            <input type="text" name="pekerjaan" class="form-control @error('pekerjaan') is-invalid @enderror" value="{{ $user->pekerjaan }}">
+                            <select name="pekerjaan" id="pekerjaan" class="form-select @error('pekerjaan') is-invalid @enderror" name="pekerjaan">
+                                <option value=""></option>
+                                @foreach ($pekerjaan as $item)
+                                    <option {{ (old('pekerjaan', $user->pekerjaan) == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                                @endforeach
+                            </select>
                             @error('pekerjaan')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

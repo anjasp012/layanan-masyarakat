@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Agama;
+use App\Enums\GolonganDarah;
+use App\Enums\JenisKelamin;
+use App\Enums\Pekerjaan;
+use App\Enums\PendidikanTerakhir;
+use App\Enums\StatusPerkawinan;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -72,8 +78,14 @@ class UserController extends Controller
 
     public function editProfile()
     {
+        $jenisKelamin = JenisKelamin::getValues();
+        $golonganDarah = GolonganDarah::getValues();
+        $agama = Agama::getValues();
+        $statusPerkawinan = StatusPerkawinan::getValues();
+        $pekerjaan = Pekerjaan::getValues();
+        $pendidikanTerakhir = PendidikanTerakhir::getValues();
         $user = User::whereId(auth()->user()->id)->firstOrFail();
-        return view('profile.edit', compact('user'));
+        return view('profile.edit', compact('user', 'golonganDarah', 'jenisKelamin', 'agama', 'statusPerkawinan', 'pekerjaan', 'pendidikanTerakhir'));
     }
 
     /**

@@ -35,17 +35,17 @@
                                         <td class="w-25 fw-bold">Golongan Darah</td>
                                         <td class="w-25">{{ $registerUser->golongan_darah }}</td>
                                         <td class="w-25 fw-bold">Provinsi</td>
-                                        <td class="w-25">{{ $registerUser->provinsi }}</td>
+                                        <td class="w-25">{{ $laravolt['provinsi'] }}</td>
                                     </tr>
                                     <tr>
                                         <td class="w-25 fw-bold">Kota</td>
-                                        <td class="w-25">{{ $registerUser->kota }}</td>
+                                        <td class="w-25">{{ $laravolt['kota'] }}</td>
                                         <td class="w-25 fw-bold">Kecamatan</td>
-                                        <td class="w-25">{{ $registerUser->kecamatan }}</td>
+                                        <td class="w-25">{{ $laravolt['kecamatan'] }}</td>
                                     </tr>
                                     <tr>
                                         <td class="w-25 fw-bold">Kelurahan</td>
-                                        <td class="w-25">{{ $registerUser->kelurahan }}</td>
+                                        <td class="w-25">{{ $laravolt['kelurahan'] }}</td>
                                         <td class="w-25 fw-bold">Rt Rw</td>
                                         <td class="w-25">{{ $registerUser->rt_rw }}</td>
                                     </tr>

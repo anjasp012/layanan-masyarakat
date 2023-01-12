@@ -8,7 +8,6 @@ use App\Enums\JenisKelamin;
 use App\Enums\Pekerjaan;
 use App\Enums\PendidikanTerakhir;
 use App\Enums\StatusPerkawinan;
-use App\Models\Jabatan;
 use App\Models\Kepengurusan;
 use App\Models\User;
 use App\Notifications\aktifasiNotification;
@@ -43,7 +42,6 @@ class AnggotaController extends Controller
         $data = [
             'user' => User::where('role_id', 3)->where('aktif', 0)->get(),
             'actived' => 'Anggota NonAktif',
-            'jabatan' => Jabatan::all()
         ];
         return view('user.index', $data);
     }
@@ -53,7 +51,6 @@ class AnggotaController extends Controller
         $data = [
             'user' => User::where('role_id', 3)->where('aktif', 2)->get(),
             'actived' => 'Anggota Pending',
-            'jabatan' => Jabatan::all()
         ];
         return view('user.index', $data);
     }
@@ -175,7 +172,17 @@ class AnggotaController extends Controller
     public function createStep5(Request $request)
     {
         $registerUser = $request->session()->get('registerUser');
-        return view('user.create.step-5', compact('registerUser'));
+        $provinsi = \Indonesia::findProvince($registerUser->id_provinsi);
+        $kota = \Indonesia::findCity($registerUser->id_kota);
+        $kecamatan = \Indonesia::findDistrict($registerUser->id_kecamatan);
+        $kelurahan = \Indonesia::findVillage($registerUser->id_kelurahan);
+        $laravolt = [
+            'provinsi' => $provinsi->name,
+            'kota' => $kota->name,
+            'kecamatan' => $kecamatan->name,
+            'kelurahan' => $kelurahan->name,
+        ];
+        return view('user.create.step-5', compact('registerUser', 'laravolt'));
     }
 
     public function storeStep5(Request $request)
@@ -240,8 +247,14 @@ class AnggotaController extends Controller
      */
     public function edit($id)
     {
+        $jenisKelamin = JenisKelamin::getValues();
+        $golonganDarah = GolonganDarah::getValues();
+        $agama = Agama::getValues();
+        $statusPerkawinan = StatusPerkawinan::getValues();
+        $pekerjaan = Pekerjaan::getValues();
+        $pendidikanTerakhir = PendidikanTerakhir::getValues();
         $user = User::where('id', $id)->firstOrFail();
-        return view('user.edit', compact('user'));
+        return view('user.edit', compact('user', 'golonganDarah', 'jenisKelamin', 'agama', 'statusPerkawinan', 'pekerjaan', 'pendidikanTerakhir'));
     }
 
     public function update(Request $request, $id)
@@ -308,7 +321,7 @@ class AnggotaController extends Controller
         $inputVal = $request->validate([
             'aktif' => 'required'
         ]);
-        $inputVal['jabatan_id'] = null;
+        $inputVal['jabatan'] = null;
         $inputVal['kepengurusan_id'] = null;
         try {
             $user->update($inputVal);

@@ -149,11 +149,14 @@ class RegisterController extends Controller
         $kota = \Indonesia::findCity($registerUser->id_kota);
         $kecamatan = \Indonesia::findDistrict($registerUser->id_kecamatan);
         $kelurahan = \Indonesia::findVillage($registerUser->id_kelurahan);
-        $registerUser['provinsi'] = $provinsi->name;
-        $registerUser['kota'] = $kota->name;
-        $registerUser['kecamatan'] = $kecamatan->name;
-        $registerUser['kelurahan'] = $kelurahan->name;
-        return view('auth.register.step-5', compact('registerUser'));
+        $laravolt = [
+            'provinsi' => $provinsi->name,
+            'kota' => $kota->name,
+            'kecamatan' => $kecamatan->name,
+            'kelurahan' => $kelurahan->name,
+        ];
+        // dd($registerUser, $laravolt);
+        return view('auth.register.step-5', compact('registerUser', 'laravolt'));
     }
 
     public function storeStep5(Request $request)
