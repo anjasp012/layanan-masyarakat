@@ -162,8 +162,8 @@ class RegisterController extends Controller
         if (!isset($registerUser->photo_diri)) {
             $request->validate([
                 'photo_diri' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'persetujuan1' => 'required',
-                'persetujuan2' => 'required',
+                'persetujuan1' => 'accepted',
+                'persetujuan2' => 'accepted',
             ]);
 
             $fileName = "photo_diri-" . time() . '.' . request()->photo_diri->getClientOriginalExtension();
