@@ -95,7 +95,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="persetujuan1">
+                                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" name="persetujuan1">
                                     <label class="form-check-label @error('persetujuan1') is-invalid @enderror" for="flexCheckDefault">
                                         Dengan ini saya menyatakan bahwa saya MENYETUJUI AD / ART ORGANISASI
                                     </label>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" name="persetujuan2">
+                                  <input class="form-check-input" type="checkbox" value="2" id="flexCheckChecked" name="persetujuan2">
                                   <label class="form-check-label @error('persetujuan2') is-invalid @enderror" for="flexCheckChecked">
                                     Saya menyatakan bahwa semua data yang tertulis di atas ini adalah benar dan saya bertanggung jawab penuh atas keabsahan data tersebut.
                                   </label>
