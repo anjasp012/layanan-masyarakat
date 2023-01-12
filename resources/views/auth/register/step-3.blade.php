@@ -12,14 +12,16 @@
                         @csrf
 
                         <div class="row mb-3">
+                            <label for="agama" class="col-md-4 col-form-label text-md-end">{{ __('agama') }}</label>
+
                             <div class="col-md-6">
-                                <label for="agama" class="col-md-4 col-form-label text-md-end">{{ __('agama') }}</label>
                                 <select name="agama" id="agama" class="form-select @error('agama') is-invalid @enderror" name="agama">
                                     <option value=""></option>
                                     @foreach ($agama as $item)
                                         <option {{ (old('agama') == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
                                     @endforeach
                                 </select>
+                                {{-- <input id="agama" type="text" class="form-control @error('agama') is-invalid @enderror" name="agama" value="{{ old('agama') }}" required autocomplete="name" autofocus> --}}
                                 @error('agama')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -29,8 +31,9 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="status_perkawinan" class="col-md-4 col-form-label text-md-end">{{ __('status_perkawinan') }}</label>
+
                             <div class="col-md-6">
-                                <label for="status_perkawinan" class="col-md-4 col-form-label text-md-end">{{ __('status_perkawinan') }}</label>
                                 <select name="status_perkawinan" id="status_perkawinan" class="form-select @error('status_perkawinan') is-invalid @enderror" name="status_perkawinan">
                                     <option value=""></option>
                                     @foreach ($statusPerkawinan as $item)
@@ -46,8 +49,9 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="pekerjaan" class="col-md-4 col-form-label text-md-end">{{ __('pekerjaan') }}</label>
+
                             <div class="col-md-6">
-                                <label for="pekerjaan" class="col-md-4 col-form-label text-md-end">{{ __('pekerjaan') }}</label>
                                 <select name="pekerjaan" id="pekerjaan" class="form-select @error('pekerjaan') is-invalid @enderror" name="pekerjaan">
                                     <option value=""></option>
                                     @foreach ($pekerjaan as $item)
@@ -63,8 +67,9 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="pendidikan_terakhir" class="col-md-4 col-form-label text-md-end">{{ __('pendidikan_terakhir') }}</label>
+
                             <div class="col-md-6">
-                                <label for="pendidikan_terakhir" class="col-md-4 col-form-label text-md-end">{{ __('pendidikan_terakhir') }}</label>
                                 <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-select @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir">
                                     <option value=""></option>
                                     @foreach ($pendidikanTerakhir as $item)
@@ -78,6 +83,56 @@
                                 @enderror
                             </div>
                         </div>
+
+                        {{-- <div class="row mb-3">
+                            <label for="photo_diri" class="col-md-4 col-form-label text-md-end">{{ __('photo_diri') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="photo_diri" type="text" class="form-control @error('photo_diri') is-invalid @enderror" name="photo_diri" value="{{ old('photo_diri') }}" required autocomplete="name" autofocus>
+                                @error('photo_diri')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div> --}}
+
+                        {{-- <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div> --}}
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

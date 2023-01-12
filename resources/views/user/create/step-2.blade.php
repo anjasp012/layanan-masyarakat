@@ -12,7 +12,7 @@
             <form action="{{ route('anggota.store.step-2') }}" method="POST" novalidate>
                 @csrf
                 <div class="mb-3">
-                    <label for="id_provinsi" class="form-label text-md-end">{{ __('id_provinsi') }}</label>
+                    <label for="id_provinsi" class="form-label text-md-end">Provinsi</label>
                     @php
                         $provinces = new App\Http\Controllers\DependantDropdownController;
                         $provinces = $provinces->provinces();
@@ -20,7 +20,7 @@
                     <select class="form-select @error('id_provinsi') is-invalid @enderror" name="id_provinsi" id="id_provinsi" required>
                         <option></option>
                         @foreach ($provinces as $item)
-                            <option {{ $item->id == old('id_provinsi' ? 'selected' : '') }} value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
+                            <option  {{ old('id_provinsi') == $item->id ? 'selected' : ''  }} value="{{ $item->id}}">{{ $item->name}}</option>
                         @endforeach
                     </select>
                     @error('id_provinsi')
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="id_kota" class="form-label text-md-end">{{ __('id_kota') }}</label>
+                    <label for="id_kota" class="form-label text-md-end">Kota</label>
                     <select class="form-select @error('id_kota') is-invalid @enderror" name="id_kota" id="id_kota" required>
                         <option></option>
                     </select>
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="id_kecamatan" class="form-label text-md-end">{{ __('id_kecamatan') }}</label>
+                    <label for="id_kecamatan" class="form-label text-md-end">Kecamatan</label>
                     <select class="form-select @error('id_kecamatan') is-invalid @enderror" name="id_kecamatan" id="id_kecamatan" required>
                         <option></option>
                     </select>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="id_kelurahan" class="form-label text-md-end">{{ __('id_kelurahan') }}</label>
+                    <label for="id_kelurahan" class="form-label text-md-end">Kelurahan</label>
                     <select class="form-select @error('id_kelurahan') is-invalid @enderror" name="id_kelurahan" id="id_kelurahan" required>
                         <option></option>
                     </select>
@@ -105,8 +105,9 @@
 
 @section('script')
     <script>
-        function onChangeSelect(url, id, name) {
-        // send ajax request to get the cities of the selected province and append to the select tag
+
+        function onChangeSelect(url, id, name, old) {
+            // console.log(id);
         $.ajax({
             url: url,
             type: 'GET',
@@ -117,17 +118,30 @@
             $('#' + name).empty();
             $('#' + name).append('<option></option>');
             $.each(data, function (key, value) {
-                $('#' + name).append('<option value="' + key + '">' + value + '</option>');
+                $('#' + name).append($('<option>', {
+                    value: key,
+                    text: value,
+                    selected: key == old ? true : false
+                }));
             });
             }
         });
         }$(function () {
-        $('#id_provinsi').on('change selected', function () {
-            onChangeSelect('{{ route("cities") }}', $(this).val(), 'id_kota');
+        if ( $('#id_provinsi').val != "") {
+            onChangeSelect('{{ route("cities") }}', `{{ old('id_provinsi') }}`, 'id_kota', `{{ old('id_kota') }}`);
+        }
+        if ( $('#id_kota').val != "") {
+            onChangeSelect('{{ route("districts") }}', `{{ old('id_kota') }}`, 'id_kecamatan', `{{ old('id_kecamatan') }}`);
+        }
+        if ( $('#id_kecamatan').val != "") {
+            onChangeSelect('{{ route("villages") }}', `{{ old('id_kecamatan') }}`, 'id_kelurahan', `{{ old('id_kelurahan') }}`);
+        }
+        $('#id_provinsi').on('change', function () {
+            onChangeSelect('{{ route("cities") }}', $(this).val(), 'id_kota', `{{ old('id_kota') }}`);
         });$('#id_kota').on('change', function () {
-            onChangeSelect('{{ route("districts") }}', $(this).val(), 'id_kecamatan');
+            onChangeSelect('{{ route("districts") }}', $(this).val(), 'id_kecamatan', `{{ old('id_kecamatan') }}`);
         });$('#id_kecamatan').on('change', function () {
-            onChangeSelect('{{ route("villages") }}', $(this).val(), 'id_kelurahan');
+            onChangeSelect('{{ route("villages") }}', $(this).val(), 'id_kelurahan', `{{ old('id_kelurahan') }}`);
         });
         });
     </script>
