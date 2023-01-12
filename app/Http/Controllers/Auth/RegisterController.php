@@ -153,7 +153,6 @@ class RegisterController extends Controller
         $registerUser['kota'] = $kota->name;
         $registerUser['kecamatan'] = $kecamatan->name;
         $registerUser['kelurahan'] = $kelurahan->name;
-        dd($registerUser);
         return view('auth.register.step-5', compact('registerUser'));
     }
 
