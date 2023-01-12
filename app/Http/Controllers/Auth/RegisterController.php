@@ -53,15 +53,21 @@ class RegisterController extends Controller
 
     public function storeStep1(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'nama_lengkap' => 'required',
             'nama_panggilan' => 'required',
-            'nik' => 'required',
+            'nik' => ['required', 'unique:users,nik'],
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'golongan_darah' => 'required',
-        ]);
+            ],
+            [
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
@@ -78,7 +84,8 @@ class RegisterController extends Controller
 
     public function storeStep2(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'id_provinsi' => 'required',
             'id_kota' => 'required',
             'id_kecamatan' => 'required',
@@ -86,7 +93,12 @@ class RegisterController extends Controller
             'rt_rw' => 'required',
             'alamat_sesuai_ktp' => 'required',
             'alamat_saat_ini' => 'required',
-        ]);
+        ],
+            [
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
@@ -106,12 +118,18 @@ class RegisterController extends Controller
 
     public function storeStep3(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'agama' => 'required',
             'status_perkawinan' => 'required',
             'pekerjaan' => 'required',
             'pendidikan_terakhir' => 'required',
-        ]);
+        ],
+            [
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
@@ -128,11 +146,17 @@ class RegisterController extends Controller
 
     public function storeStep4(Request $request)
     {
-        $inputVal = $request->validate([
-            'email' => 'required',
-            'no_hp' => 'required',
+        $inputVal = $request->validate(
+            [
+            'email' => ['required', 'unique:users,email'],
+            'no_hp' => ['required', 'unique:users,no_hp'],
             'password' => 'required',
-        ]);
+        ],
+            [
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $inputVal['password'] = Hash::make($request->password);
 
@@ -163,11 +187,18 @@ class RegisterController extends Controller
     {
         $registerUser = $request->session()->get('registerUser');
         if (!isset($registerUser->photo_diri)) {
-            $request->validate([
+            $request->validate(
+                [
                 'photo_diri' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'persetujuan1' => 'accepted',
                 'persetujuan2' => 'accepted',
-            ]);
+            ],
+                [
+                    'accepted'  => 'Ceklis terlebih dahulu',
+                    'required'  => ':attribute Harus di isi.',
+                    'unique'    => 'Maaf :attribute anda sudah terdaftar'
+                    ]
+            );
 
             $fileName = "photo_diri-" . time() . '.' . request()->photo_diri->getClientOriginalExtension();
 

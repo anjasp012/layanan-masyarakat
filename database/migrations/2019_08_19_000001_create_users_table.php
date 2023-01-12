@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             // data diri
             $table->string('nama_lengkap');
             $table->string('nama_panggilan');
-            $table->string('nik');
+            $table->string('nik')->unique();
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->string('jenis_kelamin');

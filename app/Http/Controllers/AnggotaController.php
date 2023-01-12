@@ -71,15 +71,22 @@ class AnggotaController extends Controller
 
     public function storeStep1(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'nama_lengkap' => 'required',
             'nama_panggilan' => 'required',
-            'nik' => 'required',
+            'nik' => ['required', 'unique:users,nik'],
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'golongan_darah' => 'required',
-        ]);
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $inputVal['role_id'] = '3';
         $inputVal['aktif'] = '1';
@@ -105,7 +112,8 @@ class AnggotaController extends Controller
 
     public function storeStep2(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'id_provinsi' => 'required',
             'id_kota' => 'required',
             'id_kecamatan' => 'required',
@@ -113,7 +121,13 @@ class AnggotaController extends Controller
             'rt_rw' => 'required',
             'alamat_sesuai_ktp' => 'required',
             'alamat_saat_ini' => 'required',
-        ]);
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
@@ -133,12 +147,19 @@ class AnggotaController extends Controller
 
     public function storeStep3(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'agama' => 'required',
             'status_perkawinan' => 'required',
             'pekerjaan' => 'required',
             'pendidikan_terakhir' => 'required',
-        ]);
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $registerUser = $request->session()->get('registerUser');
         $registerUser->fill($inputVal);
@@ -155,11 +176,18 @@ class AnggotaController extends Controller
 
     public function storeStep4(Request $request)
     {
-        $inputVal = $request->validate([
-            'email' => 'required',
-            'no_hp' => 'required',
+        $inputVal = $request->validate(
+            [
+            'email' => ['required', 'unique:users,email'],
+            'no_hp' => ['required', 'unique:users,no_hp'],
             'password' => 'required',
-        ]);
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         $inputVal['password'] = Hash::make($request->password);
 
@@ -190,9 +218,16 @@ class AnggotaController extends Controller
         // dd($request->all());
         $registerUser = $request->session()->get('registerUser');
         if (!isset($registerUser->photo_diri)) {
-            $request->validate([
+            $request->validate(
+                [
                 'photo_diri' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
+            ],
+                [
+                    'accepted'  => 'Ceklis terlebih dahulu',
+                    'required'  => ':attribute Harus di isi.',
+                    'unique'    => 'Maaf :attribute anda sudah terdaftar'
+                ]
+            );
 
             $fileName = "photo_diri-" . time() . '.' . request()->photo_diri->getClientOriginalExtension();
 
@@ -260,10 +295,11 @@ class AnggotaController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::where('id', $id)->firstOrFail();
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'nama_lengkap' => 'required',
             'nama_panggilan' => 'required',
-            'nik' => 'required',
+            'nik' => ['required', 'unique:users,nik,'.$user->id],
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
@@ -279,8 +315,14 @@ class AnggotaController extends Controller
             'status_perkawinan' => 'required',
             'pekerjaan' => 'required',
             'pendidikan_terakhir' => 'required',
-            'no_hp' => 'required',
-        ]);
+            'no_hp' => ['required', 'unique:users,no_hp,'.$user->id],
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         try {
             $user->update($inputVal);
@@ -301,9 +343,16 @@ class AnggotaController extends Controller
     {
         // dd($id);
         $user = User::where('id', $id)->firstOrFail();
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'aktif' => 'required'
-        ]);
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
         $inputVal['no_kta'] = date('dm') .' ' .date('Y') .' ' .str_pad($id, 4, '0', STR_PAD_LEFT);
         try {
             $user->update($inputVal);
@@ -318,9 +367,16 @@ class AnggotaController extends Controller
     public function statusNonAktif(Request $request, $id)
     {
         $user = User::where('id', $id)->firstOrFail();
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'aktif' => 'required'
-        ]);
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
         $inputVal['jabatan'] = null;
         $inputVal['kepengurusan_id'] = null;
         try {

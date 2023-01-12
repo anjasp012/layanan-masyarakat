@@ -98,10 +98,11 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'nama_lengkap' => 'required',
             'nama_panggilan' => 'required',
-            'nik' => 'required',
+            'nik' => ['required', 'unique:users,nik,'.$user->id],
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
@@ -117,8 +118,14 @@ class UserController extends Controller
             'status_perkawinan' => 'required',
             'pekerjaan' => 'required',
             'pendidikan_terakhir' => 'required',
-            'no_hp' => 'required',
-        ]);
+            'no_hp' => ['required', 'unique:users,no_hp,'.$user->id],
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         try {
             $user->update($inputVal);
@@ -131,10 +138,11 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = User::whereId(auth()->user()->id)->firstOrFail();
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'nama_lengkap' => 'required',
             'nama_panggilan' => 'required',
-            'nik' => 'required',
+            'nik' => ['required', 'unique:users,nik,'.$user->id],
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
@@ -150,8 +158,14 @@ class UserController extends Controller
             'status_perkawinan' => 'required',
             'pekerjaan' => 'required',
             'pendidikan_terakhir' => 'required',
-            'no_hp' => 'required',
-        ]);
+            'no_hp' => ['required', 'unique:users,no_hp,'.$user->id],
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
 
         if ($request->has('photo_diri')) {
             $photoDiri = "photo_diri-" . time() . '.' . 'png';

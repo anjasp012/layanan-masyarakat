@@ -98,7 +98,7 @@ class RelawanController extends Controller
         $inputVal = $request->validate([
             'nama_lengkap' => 'required',
             'nama_panggilan' => 'required',
-            'nik' => 'required',
+            'nik' => ['required', 'unique:users,nik,'.$user->id],
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_Kelamin' => 'required',
@@ -114,7 +114,7 @@ class RelawanController extends Controller
             'status_perkawinan' => 'required',
             'pekerjaan' => 'required',
             'pendidikan_terakhir' => 'required',
-            'no_hp' => 'required',
+            'no_hp' => ['required', 'unique:users,no_hp,'.$user->id],
         ]);
 
         try {

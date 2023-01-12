@@ -140,7 +140,7 @@
                             <select name="golongan_darah" id="golongan_darah" class="form-select @error('golongan_darah') is-invalid @enderror" name="golongan_darah">
                                 <option value=""></option>
                                 @foreach ($golonganDarah as $item)
-                                    <option {{ (old('golongan_darah', $user->golongan_darah) == strtoupper($item)) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
+                                    <option {{ (old('golongan_darah', $user->golongan_darah) == $item) ? 'selected' : '' }} value="{{ $item }}">{{ strtoupper($item) }}</option>
                                 @endforeach
                             </select>
                             @error('golongan_darah')
