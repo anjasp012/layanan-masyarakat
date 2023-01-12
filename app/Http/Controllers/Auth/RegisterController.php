@@ -145,6 +145,15 @@ class RegisterController extends Controller
     public function createStep5(Request $request)
     {
         $registerUser = $request->session()->get('registerUser');
+        $provinsi = \Indonesia::findProvince($registerUser->id_provinsi);
+        $kota = \Indonesia::findCity($registerUser->id_kota);
+        $kecamatan = \Indonesia::findDistrict($registerUser->id_kecamatan);
+        $kelurahan = \Indonesia::findVillage($registerUser->id_kelurahan);
+        $registerUser['provinsi'] = $provinsi->name;
+        $registerUser['kota'] = $kota->name;
+        $registerUser['kecamatan'] = $kecamatan->name;
+        $registerUser['kelurahan'] = $kelurahan->name;
+        dd($registerUser);
         return view('auth.register.step-5', compact('registerUser'));
     }
 
