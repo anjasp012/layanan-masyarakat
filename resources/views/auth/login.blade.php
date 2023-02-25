@@ -4,24 +4,32 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <center><img src="assets/img/logo.png" alt="logo" width="100" height="100"></center><br>
+            <center><h4>Forum Peduli Umat</h4></center></br>
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('attemptLogin') }}">
                         @csrf
+
+                        <div class="row mb-3">
+                            <label for="error" class="col-md-4 col-form-label text-md-end"></label>
+                            <div class="col-md-6">
+                                @if(session()->has('error'))
+                                    <span class="alert-danger" role="alert">
+                                        <strong>{!! \Session::get('error') !!}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                             </div>
                         </div>
 
@@ -29,13 +37,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
                             </div>
                         </div>
 
@@ -62,7 +64,7 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
-                                <a href="{{ route('register.create.step-0') }}">register</a>
+                                <a href="{{ route('register.create.step-0') }}">Registrasi</a>
                             </div>
                         </div>
                     </form>

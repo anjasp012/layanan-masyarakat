@@ -21,44 +21,24 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    public function loginView()
+    {
+        return view('auth.login');
+    }
 
     protected function attemptLogin(Request $request)
     {
-        return $this->guard()->attemptWhen(
-            $this->credentials($request),
-            fn ($user) => $user->aktif == 1,
-            $request->filled('remember')
-        );
+        if (auth()->guard('user')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            return redirect(route('dashboard'));
+        } elseif (auth()->guard('pelanggan')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            return redirect(route('dashboard'));
+        } else {
+            return redirect()->back()->with('error', 'Email atau Password yang anda masukan salah / Akun Anda belum Diaktivasi.');
+        }
     }
 
-
-    protected function sendFailedLoginResponse(Request $request)
-    {
-        $user = $this->guard()->getLastAttempted();
-
-        throw ValidationException::withMessages([
-            $this->username() => [
-                $user && $this->guard()->getProvider()->validateCredentials($user, $this->credentials($request))
-                    ? 'Email belum Diaktivasi / Sedang Di NonAktifkan'
-                    : trans('auth.failed')
-            ]
-        ]);
-    }
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:user,pelanggan')->except('logout');
     }
 }

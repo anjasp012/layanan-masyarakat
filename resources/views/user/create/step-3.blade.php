@@ -25,7 +25,7 @@
         @endif
                 @csrf
                 <div class="mb-3">
-                    <label for="agama" class="form-label">{{ __('agama') }}</label>
+                    <label for="agama" class="form-label">{{ __('Agama') }}</label>
                     <select name="agama" id="agama" class="form-select @error('agama') is-invalid @enderror" name="agama">
                         <option value=""></option>
                         @foreach ($agama as $item)
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="status_perkawinan" class="form-label text-md-end">{{ __('status_perkawinan') }}</label>
+                    <label for="status_perkawinan" class="form-label text-md-end">{{ __('Status perkawinan') }}</label>
                     <select name="status_perkawinan" id="status_perkawinan" class="form-select @error('status_perkawinan') is-invalid @enderror" name="status_perkawinan">
                         <option value=""></option>
                         @foreach ($statusPerkawinan as $item)
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="pekerjaan" class="form-label text-md-end">{{ __('pekerjaan') }}</label>
+                    <label for="pekerjaan" class="form-label text-md-end">{{ __('Pekerjaan') }}</label>
                     <select name="pekerjaan" id="pekerjaan" class="form-select @error('pekerjaan') is-invalid @enderror" name="pekerjaan">
                         <option value=""></option>
                         @foreach ($pekerjaan as $item)
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="pendidikan_terakhir" class="form-label text-md-end">{{ __('pendidikan_terakhir') }}</label>
+                    <label for="pendidikan_terakhir" class="form-label text-md-end">{{ __('Pendidikan terakhir') }}</label>
                     <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-select @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir">
                         <option value=""></option>
                         @foreach ($pendidikanTerakhir as $item)

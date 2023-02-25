@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="photo_diri" class="form-label">{{ __('photo_diri') }}</label>
+                    <label for="photo_diri" class="form-label">{{ __('Photo diri') }}</label>
 
                     <div class="col-md-6">
                         <div id="frames"></div>

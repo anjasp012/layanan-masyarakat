@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="mb-3">
-                            <label for="nama_lengkap" class="form-label">Foto</label>
+                            <label for="nama_lengkap" class="form-label">Photo</label>
                             <input type="file" name="photo_diri" class="form-control @error('photo_diri') is-invalid @enderror" value="{{ $user->photo_diri }}">
                             @error('photo_diri')
                                 <span class="invalid-feedback" role="alert">

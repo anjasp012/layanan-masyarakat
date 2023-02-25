@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="tempat_lahir" class="form-label">{{ __('tempat_lahir') }}</label>
+                    <label for="tempat_lahir" class="form-label">{{ __('Tempat Lahir') }}</label>
                     <input id="tempat_lahir" type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required autocomplete="name" autofocus>
                     @error('tempat_lahir')
                         <span class="invalid-feedback" role="alert">
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="tanggal_lahir" class="form-label">{{ __('tanggal_lahir') }}</label>
+                    <label for="tanggal_lahir" class="form-label">{{ __('Tanggal Lahir') }}</label>
                     <input id="tanggal_lahir" type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required autocomplete="name" autofocus>
                     @error('tanggal_lahir')
                         <span class="invalid-feedback" role="alert">
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="jenis_kelamin" class="form-label">{{ __('jenis_kelamin') }}</label>
+                    <label for="jenis_kelamin" class="form-label">{{ __('Jenis Kelamin') }}</label>
                     <select name="jenis_kelamin" id="jenis_kelamin" class="form-select @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin">
                         <option value=""></option>
                         @foreach ($jenisKelamin as $item)
@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="golongan_darah" class="form-label">{{ __('golongan_darah') }}</label>
+                    <label for="golongan_darah" class="form-label">{{ __('Golongan Darah') }}</label>
                     <select name="golongan_darah" id="golongan_darah" class="form-select @error('golongan_darah') is-invalid @enderror" name="golongan_darah">
                         <option value=""></option>
                         @foreach ($golonganDarah as $item)

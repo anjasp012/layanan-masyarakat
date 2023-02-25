@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="tempat_lahir" class="col-md-4 col-form-label text-md-end">{{ __('tempat_lahir') }}</label>
+                            <label for="tempat_lahir" class="col-md-4 col-form-label text-md-end">{{ __('Tempat lahir') }}</label>
 
                             <div class="col-md-6">
                                 <input id="tempat_lahir" type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required autocomplete="name" autofocus>
@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="tanggal_lahir" class="col-md-4 col-form-label text-md-end">{{ __('tanggal_lahir') }}</label>
+                            <label for="tanggal_lahir" class="col-md-4 col-form-label text-md-end">{{ __('Tanggal lahir') }}</label>
 
                             <div class="col-md-6">
                                 <input id="tanggal_lahir" type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required autocomplete="name" autofocus>
@@ -95,7 +95,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="golongan_darah" class="col-md-4 col-form-label text-md-end">{{ __('golongan_darah') }}</label>
+                            <label for="golongan_darah" class="col-md-4 col-form-label text-md-end">{{ __('Golongan darah') }}</label>
 
                             <div class="col-md-6">
                                 <select name="golongan_darah" id="golongan_darah" class="form-select @error('golongan_darah') is-invalid @enderror" name="golongan_darah">

@@ -10,6 +10,6 @@ class Pengumuman extends Model
     use HasFactory;
     protected $table = 'pengumuman';
 
-    protected $fillable = ['pengumuman'];
+    protected $guarded = ['id'];
 
 }

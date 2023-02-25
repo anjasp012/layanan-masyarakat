@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="agama" class="col-md-4 col-form-label text-md-end">{{ __('agama') }}</label>
+                            <label for="agama" class="col-md-4 col-form-label text-md-end">{{ __('Agama') }}</label>
 
                             <div class="col-md-6">
                                 <select name="agama" id="agama" class="form-select @error('agama') is-invalid @enderror" name="agama">
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="status_perkawinan" class="col-md-4 col-form-label text-md-end">{{ __('status_perkawinan') }}</label>
+                            <label for="status_perkawinan" class="col-md-4 col-form-label text-md-end">{{ __('Status perkawinan') }}</label>
 
                             <div class="col-md-6">
                                 <select name="status_perkawinan" id="status_perkawinan" class="form-select @error('status_perkawinan') is-invalid @enderror" name="status_perkawinan">
@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="pekerjaan" class="col-md-4 col-form-label text-md-end">{{ __('pekerjaan') }}</label>
+                            <label for="pekerjaan" class="col-md-4 col-form-label text-md-end">{{ __('Pekerjaan') }}</label>
 
                             <div class="col-md-6">
                                 <select name="pekerjaan" id="pekerjaan" class="form-select @error('pekerjaan') is-invalid @enderror" name="pekerjaan">
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="pendidikan_terakhir" class="col-md-4 col-form-label text-md-end">{{ __('pendidikan_terakhir') }}</label>
+                            <label for="pendidikan_terakhir" class="col-md-4 col-form-label text-md-end">{{ __('Pendidikan terakhir') }}</label>
 
                             <div class="col-md-6">
                                 <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-select @error('pendidikan_terakhir') is-invalid @enderror" name="pendidikan_terakhir">
@@ -85,7 +85,7 @@
                         </div>
 
                         {{-- <div class="row mb-3">
-                            <label for="photo_diri" class="col-md-4 col-form-label text-md-end">{{ __('photo_diri') }}</label>
+                            <label for="photo_diri" class="col-md-4 col-form-label text-md-end">{{ __('Photo diri') }}</label>
 
                             <div class="col-md-6">
                                 <input id="photo_diri" type="text" class="form-control @error('photo_diri') is-invalid @enderror" name="photo_diri" value="{{ old('photo_diri') }}" required autocomplete="name" autofocus>

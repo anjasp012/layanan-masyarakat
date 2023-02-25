@@ -259,7 +259,16 @@ class StaffController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        $provinsi = \Indonesia::findProvince($user->id_provinsi);
+        $kota = \Indonesia::findCity($user->id_kota);
+        $kecamatan = \Indonesia::findDistrict($user->id_kecamatan);
+        $kelurahan = \Indonesia::findVillage($user->id_kelurahan);
+        $user['provinsi'] = $provinsi->name;
+        $user['kota'] = $kota->name;
+        $user['kecamatan'] = $kecamatan->name;
+        $user['kelurahan'] = $kelurahan->name;
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -270,7 +279,14 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-        //
+        $jenisKelamin = JenisKelamin::getValues();
+        $golonganDarah = GolonganDarah::getValues();
+        $agama = Agama::getValues();
+        $statusPerkawinan = StatusPerkawinan::getValues();
+        $pekerjaan = Pekerjaan::getValues();
+        $pendidikanTerakhir = PendidikanTerakhir::getValues();
+        $user = User::where('id', $id)->firstOrFail();
+        return view('user.edit', compact('user', 'golonganDarah', 'jenisKelamin', 'agama', 'statusPerkawinan', 'pekerjaan', 'pendidikanTerakhir'));
     }
 
     /**
@@ -311,6 +327,12 @@ class StaffController extends Controller
                 'unique'    => 'Maaf :attribute anda sudah terdaftar'
             ]
         );
+
+        if ($request->has('photo_diri')) {
+            $photoDiri = "photo_diri-" . time() . '.' . 'png';
+            $request->photo_diri->storeAs('public/photo_diri', $photoDiri);
+            $inputVal['photo_diri'] = $photoDiri;
+        }
 
         try {
             $user->update($inputVal);
@@ -375,8 +397,8 @@ class StaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $staff)
     {
-        //
+        dd($staff);
     }
 }

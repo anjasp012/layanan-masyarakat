@@ -17,15 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            ProvincesSeeder::class,
-            CitiesSeeder::class,
-            DistrictsSeeder::class,
-            VillagesSeeder::class,
-        ]);
-        $this->call(RoleSeeder::class);
-        $this->call(KepengurusanSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(KartuTandaAnggotaSeeder::class);
+        // $this->call([
+        //     ProvincesSeeder::class,
+        //     CitiesSeeder::class,
+        //     DistrictsSeeder::class,
+        //     VillagesSeeder::class,
+        // ]);
+        // $this->call(RoleSeeder::class);
+        // $this->call(KepengurusanSeeder::class);
+        // $this->call(UserSeeder::class);
+        // $this->call(KartuTandaAnggotaSeeder::class);
+        $this->call(HakAksesSeeder::class);
     }
 }

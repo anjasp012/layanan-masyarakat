@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HakAkses;
 use App\Models\Jabatan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ class DppController extends Controller
         $data = [
             'user' => User::where('role_id', 3)->where('kepengurusan_id', 1)->where('aktif', 1)->get(),
             'actived' => 'Dpp',
+            'hakAkses' => HakAkses::all()
         ];
-        return view('user.index', $data);
+        return view('dpp.index', $data);
     }
 
     /**
@@ -91,6 +93,24 @@ class DppController extends Controller
         }
     }
 
+    public function updateAkses(Request $request, $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        if ($request->hak_akses_id == 'null') {
+            $inputVal['hak_akses_id'] = null;
+        } else {
+            $inputVal = $request->validate([
+                'hak_akses_id' => 'required'
+            ]);
+        }
+        try {
+            $user->update($inputVal);
+            return redirect()->back();
+        } catch (\Exception $th) {
+            return redirect()->back();
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -99,6 +119,19 @@ class DppController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::where('id', $id)->firstOrFail();
+        $inputVal = [
+            'kepengurusan_id' => null,
+            'hak_akses_id' => null,
+            'jabatan' => null,
+        ];
+
+        try {
+            $user->update($inputVal);
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+
     }
 }

@@ -24,11 +24,11 @@
     <div class="row">
         <div class="col-md-12">
             @if (Request::routeIs('anggota.edit'))
-            <form action="{{ route('anggota.update', $user->id) }}" method="POST">
+            <form action="{{ route('anggota.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @elseif (Request::routeIs('relawan.edit'))
-            <form action="{{ route('relawan.update', $user->id) }}" method="POST">
+            <form action="{{ route('relawan.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @elseif (Request::routeIs('staff.edit'))
-            <form action="{{ route('staff.update', $user->id) }}" method="POST">
+            <form action="{{ route('staff.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @endif
                 @csrf
                 @method('PATCH')

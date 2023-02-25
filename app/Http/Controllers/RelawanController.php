@@ -76,6 +76,14 @@ class RelawanController extends Controller
     public function show($id)
     {
         $user = User::where('id', $id)->firstOrFail();
+        $provinsi = \Indonesia::findProvince($user->id_provinsi);
+        $kota = \Indonesia::findCity($user->id_kota);
+        $kecamatan = \Indonesia::findDistrict($user->id_kecamatan);
+        $kelurahan = \Indonesia::findVillage($user->id_kelurahan);
+        $user['provinsi'] = $provinsi->name;
+        $user['kota'] = $kota->name;
+        $user['kecamatan'] = $kecamatan->name;
+        $user['kelurahan'] = $kelurahan->name;
         return view('user.show', compact('user'));
     }
 
@@ -88,8 +96,14 @@ class RelawanController extends Controller
 
     public function edit($id)
     {
+        $jenisKelamin = JenisKelamin::getValues();
+        $golonganDarah = GolonganDarah::getValues();
+        $agama = Agama::getValues();
+        $statusPerkawinan = StatusPerkawinan::getValues();
+        $pekerjaan = Pekerjaan::getValues();
+        $pendidikanTerakhir = PendidikanTerakhir::getValues();
         $user = User::where('id', $id)->firstOrFail();
-        return view('user.edit', compact('user'));
+        return view('user.edit', compact('user', 'golonganDarah', 'jenisKelamin', 'agama', 'statusPerkawinan', 'pekerjaan', 'pendidikanTerakhir'));
     }
 
     public function update(Request $request, $id)
@@ -116,6 +130,12 @@ class RelawanController extends Controller
             'pendidikan_terakhir' => 'required',
             'no_hp' => ['required', 'unique:users,no_hp,'.$user->id],
         ]);
+
+        if ($request->has('photo_diri')) {
+            $photoDiri = "photo_diri-" . time() . '.' . 'png';
+            $request->photo_diri->storeAs('public/photo_diri', $photoDiri);
+            $inputVal['photo_diri'] = $photoDiri;
+        }
 
         try {
             $user->update($inputVal);

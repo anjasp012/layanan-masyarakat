@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="rt_rw" class="form-label text-md-end">{{ __('rt_rw') }}</label>
+                    <label for="rt_rw" class="form-label text-md-end">{{ __('RT / RW') }}</label>
                     <input id="rt_rw" type="text" class="form-control @error('rt_rw') is-invalid @enderror" name="rt_rw" value="{{ old('rt_rw') }}" required autocomplete="name" autofocus>
                     @error('rt_rw')
                         <span class="invalid-feedback" role="alert">
@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="alamat_sesuai_ktp" class="form-label text-md-end">{{ __('alamat_sesuai_ktp') }}</label>
+                    <label for="alamat_sesuai_ktp" class="form-label text-md-end">{{ __('Alamat sesuai KTP') }}</label>
                     <input id="alamat_sesuai_ktp" type="text" class="form-control @error('alamat_sesuai_ktp') is-invalid @enderror" name="alamat_sesuai_ktp" value="{{ old('alamat_sesuai_ktp') }}" required autocomplete="name" autofocus>
                     @error('alamat_sesuai_ktp')
                         <span class="invalid-feedback" role="alert">
@@ -100,7 +100,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="alamat_saat_ini" class="form-label">{{ __('alamat_saat_ini') }}</label>
+                    <label for="alamat_saat_ini" class="form-label">{{ __('Alamat saat ini') }}</label>
                     <input id="alamat_saat_ini" type="text" class="form-control @error('alamat_saat_ini') is-invalid @enderror" name="alamat_saat_ini" value="{{ old('alamat_saat_ini') }}" required autocomplete="name" autofocus>
                     @error('alamat_saat_ini')
                         <span class="invalid-feedback" role="alert">

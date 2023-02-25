@@ -19,8 +19,10 @@ class PengumumanController extends Controller
      */
     public function index()
     {
-        $pengumuman = Pengumuman::all();
-        return view('pengumuman.index', compact('pengumuman'));
+        $data = [
+            'pengumuman' => Pengumuman::all(),
+        ];
+        return view('pengumuman.index', $data);
     }
 
     /**
@@ -42,7 +44,8 @@ class PengumumanController extends Controller
     public function store(Request $request)
     {
         $inputVal = $request->validate([
-            'pengumuman' => ['required']
+            'pengumuman' => ['required'],
+            'jenis' => ['required']
         ]);
 
         try {

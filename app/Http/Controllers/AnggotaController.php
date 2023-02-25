@@ -8,6 +8,7 @@ use App\Enums\JenisKelamin;
 use App\Enums\Pekerjaan;
 use App\Enums\PendidikanTerakhir;
 use App\Enums\StatusPerkawinan;
+use App\Models\HakAkses;
 use App\Models\Kepengurusan;
 use App\Models\User;
 use App\Notifications\aktifasiNotification;
@@ -32,7 +33,7 @@ class AnggotaController extends Controller
         $data = [
             'user' => User::where('role_id', 3)->where('aktif', 1)->get(),
             'actived' => 'Anggota Aktif',
-            'kepengurusan' => Kepengurusan::all()
+            'kepengurusan' => Kepengurusan::all(),
         ];
         return view('user.index', $data);
     }
@@ -324,6 +325,12 @@ class AnggotaController extends Controller
             ]
         );
 
+        if ($request->has('photo_diri')) {
+            $photoDiri = "photo_diri-" . time() . '.' . 'png';
+            $request->photo_diri->storeAs('public/photo_diri', $photoDiri);
+            $inputVal['photo_diri'] = $photoDiri;
+        }
+
         try {
             $user->update($inputVal);
             return redirect(route('anggota.index'));
@@ -393,9 +400,13 @@ class AnggotaController extends Controller
     public function updateKepengurusan(Request $request, $id)
     {
         $user = User::where('id', $id)->firstOrFail();
-        $inputVal = $request->validate([
-            'kepengurusan_id' => 'required'
-        ]);
+        if ($request->kepengurusan_id == 'null') {
+            $inputVal['kepengurusan_id'] = null;
+        } else {
+            $inputVal = $request->validate([
+                'kepengurusan_id' => 'required'
+            ]);
+        }
         try {
             $user->update($inputVal);
             return redirect()->back();

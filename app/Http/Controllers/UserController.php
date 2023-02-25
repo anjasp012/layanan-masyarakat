@@ -10,6 +10,7 @@ use App\Enums\PendidikanTerakhir;
 use App\Enums\StatusPerkawinan;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -127,6 +128,12 @@ class UserController extends Controller
             ]
         );
 
+        if ($request->has('photo_diri')) {
+            $photoDiri = "photo_diri-" . time() . '.' . 'png';
+            $request->photo_diri->storeAs('public/photo_diri', $photoDiri);
+            $inputVal['photo_diri'] = $photoDiri;
+        }
+
         try {
             $user->update($inputVal);
             return redirect(route('dashboard'));
@@ -187,8 +194,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        if ($user->photo_diri) {
+            Storage::delete('public/photo_diri/'. $user->photo_diri);
+        }
+        $user->delete();
+        return redirect()->back();
     }
 }

@@ -15,6 +15,14 @@
                     <label for="pengumuman" class="form-label">Text Pengumuman</label>
                     <textarea name="pengumuman" id="pengumuman" class="form-control"></textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="jenis" class="form-label">Jenis</label>
+                    <select name="jenis" id="jenis" class="form-control">
+                        <option selected disabled>Pilih</option>
+                        <option value="1">Internal</option>
+                        <option value="0">Eksternal</option>
+                    </select>
+                </div>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-success">Tambah</button>
                 </div>

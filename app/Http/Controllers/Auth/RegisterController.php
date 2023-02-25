@@ -9,6 +9,7 @@ use App\Enums\Pekerjaan;
 use App\Enums\PendidikanTerakhir;
 use App\Enums\StatusPerkawinan;
 use App\Http\Controllers\Controller;
+use App\Models\Pelanggan;
 use App\Models\User;
 use App\Notifications\registerNotification;
 use Illuminate\Http\Request;
@@ -25,11 +26,16 @@ class RegisterController extends Controller
 
     public function storeStep0(Request $request)
     {
+        // dd($request->all());
         $inputVal = $request->validate([
             'role_id' => 'required',
         ]);
 
         $inputVal['aktif'] = '2';
+
+        if ($request->role_id == 5) {
+            return redirect(route('registerPelanggan.create'));
+        }
 
         if (empty($request->session()->get('registerUser'))) {
             $registerUser = new User();
@@ -41,6 +47,53 @@ class RegisterController extends Controller
             $request->session()->put('registerUser', $registerUser);
         }
         return redirect()->route('register.create.step-1');
+    }
+
+    public function registerPelangganCreate()
+    {
+        return view('auth.register-pelanggan.register');
+    }
+
+    public function registerPelangganStore(Request $request)
+    {
+        $inputVal = $request->validate([
+                'nama_pengurus' => ['required'],
+                'alamat_rumah_pengurus' => ['required'],
+                'no_hp' => ['required', 'unique:pelanggans,no_hp'],
+                'email' => ['required', 'unique:pelanggans,email'],
+                'password' => 'required',
+                'photo_diri' => ['required'],
+                'nama_rumah_ibadah' => ['required'],
+                'alamat_rumah_ibadah' => ['required'],
+                'alamat_lengkap_rumah_ibadah' => ['required'],
+                'photo_rumah_ibadah' => ['required'],
+                'photo_rumah_ibadah' => ['required'],
+            ],
+            [
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
+
+        $inputVal['password'] = Hash::make($request->password);
+        if ($request->has('photo_diri')) {
+            $photoDiri = "photo-diri-" . time() . '.' . request()->photo_diri->getClientOriginalExtension();
+            $request->photo_diri->storeAs('public/pelanggan/photo-diri', $photoDiri);
+            $inputVal['photo_diri'] = $photoDiri;
+        }
+        if ($request->has('photo_rumah_ibadah')) {
+            $photoRumahIbadah = "photo-rumah-ibadah-" . time() . '.' . request()->photo_rumah_ibadah->getClientOriginalExtension();
+            $request->photo_rumah_ibadah->storeAs('public/pelanggan/photo-rumah-ibadah', $photoRumahIbadah);
+            $inputVal['photo_rumah_ibadah'] = $photoRumahIbadah;
+        }
+        $inputVal['no_pelanggan'] = 'P-'.date('dmY') .str_pad(Pelanggan::next(), 4, '0', STR_PAD_LEFT);
+
+        try {
+            Pelanggan::create($inputVal);
+            return redirect(route('login'));
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     public function createStep1(Request $request)

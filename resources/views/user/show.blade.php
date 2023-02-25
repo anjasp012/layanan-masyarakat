@@ -27,8 +27,8 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="mb-3">
-                            <label for="photo_diri" class="form-label d-block">Foto</label>
-                            <img src="{{ asset('storage/photo_diri/'.$user->photo_diri) }}" alt="">
+                            <label for="photo_diri" class="form-label d-block">Photo</label>
+                            <img src="{{ asset('storage/photo_diri/'.$user->photo_diri) }}" class="rounded" height = "150" width = "150">
                         </div>
                     </div>
                 </div>

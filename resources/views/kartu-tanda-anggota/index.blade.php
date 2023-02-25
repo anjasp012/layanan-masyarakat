@@ -26,7 +26,7 @@
                     </div>
                     <div class="position-absolute bottom-0">
                         <div class="ms-4 mb-3">
-                            <h3 class="fw-bold text-white lh-1">{{ $user->nama_lengkap }}</h3>
+                            <h6 class="fw-bold text-white lh-1">{{ $user->nama_lengkap }}</h6>
                             <h3 class="fw-lighter fs-2 text-white lh-1">{{ $user->no_kta }}</h3>
                             <h3 class="fw-bold text-white lh-1 text-capitalize">{{ strtolower($user->role->nama_role) }}</h3>
                         </div>

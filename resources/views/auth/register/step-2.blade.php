@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="provinsi" class="col-md-4 col-form-label text-md-end">{{ __('provinsi') }}</label>
+                            <label for="provinsi" class="col-md-4 col-form-label text-md-end">{{ __('Provinsi') }}</label>
 
                             <div class="col-md-6">
                                 @php
@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="kota" class="col-md-4 col-form-label text-md-end">{{ __('kota') }}</label>
+                            <label for="kota" class="col-md-4 col-form-label text-md-end">{{ __('Kota') }}</label>
 
                             <div class="col-md-6">
                                 <select class="form-select @error('id_kota') is-invalid @enderror" name="id_kota" id="id_kota" required>
@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="kecamatan" class="col-md-4 col-form-label text-md-end">{{ __('kecamatan') }}</label>
+                            <label for="kecamatan" class="col-md-4 col-form-label text-md-end">{{ __('Kecamatan') }}</label>
 
                             <div class="col-md-6">
                                 <select class="form-select @error('id_kecamatan') is-invalid @enderror" name="id_kecamatan" id="id_kecamatan" required>
@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="kelurahan" class="col-md-4 col-form-label text-md-end">{{ __('kelurahan') }}</label>
+                            <label for="kelurahan" class="col-md-4 col-form-label text-md-end">{{ __('Kelurahan') }}</label>
 
                             <div class="col-md-6">
                                 <select class="form-select @error('id_kelurahan') is-invalid @enderror" name="id_kelurahan" id="id_kelurahan" required>
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="rt_rw" class="col-md-4 col-form-label text-md-end">{{ __('rt_rw') }}</label>
+                            <label for="rt_rw" class="col-md-4 col-form-label text-md-end">{{ __('RT / RW') }}</label>
 
                             <div class="col-md-6">
                                 <input id="rt_rw" type="text" class="form-control @error('rt_rw') is-invalid @enderror" name="rt_rw" value="{{ old('rt_rw') }}" required autocomplete="name" autofocus>
@@ -92,7 +92,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="alamat_sesuai_ktp" class="col-md-4 col-form-label text-md-end">{{ __('alamat_sesuai_ktp') }}</label>
+                            <label for="alamat_sesuai_ktp" class="col-md-4 col-form-label text-md-end">{{ __('Alamat sesuai KTP') }}</label>
 
                             <div class="col-md-6">
                                 <input id="alamat_sesuai_ktp" type="text" class="form-control @error('alamat_sesuai_ktp') is-invalid @enderror" name="alamat_sesuai_ktp" value="{{ old('alamat_sesuai_ktp') }}" required autocomplete="name" autofocus>
@@ -105,7 +105,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="alamat_saat_ini" class="col-md-4 col-form-label text-md-end">{{ __('alamat_saat_ini') }}</label>
+                            <label for="alamat_saat_ini" class="col-md-4 col-form-label text-md-end">{{ __('Alamat saat ini') }}</label>
 
                             <div class="col-md-6">
                                 <input id="alamat_saat_ini" type="text" class="form-control @error('alamat_saat_ini') is-invalid @enderror" name="alamat_saat_ini" value="{{ old('alamat_saat_ini') }}" required autocomplete="name" autofocus>

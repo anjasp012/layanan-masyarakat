@@ -1,16 +1,35 @@
 <?php
 
+use App\Http\Controllers\AnggaranDasarController;
+use App\Http\Controllers\AnggaranRumahTanggaController;
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\DependantDropdownController;
 use App\Http\Controllers\DpdController;
 use App\Http\Controllers\DppController;
-use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\GeneralCleaningController;
+use App\Http\Controllers\HumasController;
 use App\Http\Controllers\KartuTandaAnggotaController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\KorlapController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LayananController;
+use App\Http\Controllers\Pelanggan\KartuPelangganController;
+use App\Http\Controllers\Pelanggan\ProfilePelangganController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PemasanganCctvController;
+use App\Http\Controllers\PengecatanController;
 use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\RekeningBankController;
 use App\Http\Controllers\RelawanController;
+use App\Http\Controllers\ServiceAirConditionerController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WilayahDpdController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +46,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/login', [LoginController::class, 'loginView'])->name('login');
+Route::post('/login', [LoginController::class, 'attemptLogin'])->name('attemptLogin');
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+
 Route::get('provinces', [DependantDropdownController::class, 'provinces'])->name('provinces');
 Route::get('cities', [DependantDropdownController::class, 'cities'])->name('cities');
 Route::get('districts', [DependantDropdownController::class, 'districts'])->name('districts');
@@ -35,6 +58,8 @@ Route::get('villages', [DependantDropdownController::class, 'villages'])->name('
 Route::group(['middleware' => ['guest']], function () {
     Route::get('register', [RegisterController::class, 'createStep0'])->name('register.create.step-0');
     Route::post('register', [RegisterController::class, 'storeStep0'])->name('register.store.step-0');
+    Route::get('register/pelanggan', [RegisterController::class, 'registerPelangganCreate'])->name('registerPelanggan.create');
+    Route::post('register/pelanggan', [RegisterController::class, 'registerPelangganStore'])->name('registerPelanggan.store');
     Route::get('register/1', [RegisterController::class, 'createStep1'])->name('register.create.step-1');
     Route::post('register/1', [RegisterController::class, 'storeStep1'])->name('register.store.step-1');
     Route::get('register/2', [RegisterController::class, 'createStep2'])->name('register.create.step-2');
@@ -47,15 +72,13 @@ Route::group(['middleware' => ['guest']], function () {
     Route::post('register/5', [RegisterController::class, 'storeStep5'])->name('register.store.step-5');
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth:user,pelanggan']], function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
-
     Route::get('edit-profile', [UserController::class, 'editProfile'])->name('user.editProfile');
     Route::match(['patch', 'put'], 'edit-profile', [UserController::class, 'updateProfile'])->name('user.updateProfile');
     Route::resource('user', UserController::class);
 
     Route::group(['middleware' => ['role:1,2']], function () {
-        Route::resource('jabatan', JabatanController::class);
         Route::get('tambah-anggota/1', [AnggotaController::class, 'createStep1'])->name('anggota.create.step-1');
         Route::post('tambah-anggota/1', [AnggotaController::class, 'storeStep1'])->name('anggota.store.step-1');
         Route::get('tambah-anggota/2', [AnggotaController::class, 'createStep2'])->name('anggota.create.step-2');
@@ -79,10 +102,22 @@ Route::group(['middleware' => ['auth']], function () {
         Route::match(['patch', 'put'], 'relawan/{relawan}/statusAktif', [RelawanController::class, 'statusAktif'])->name('relawan.statusAktif');
         Route::match(['patch', 'put'], 'relawan/{relawan}/statusNonAktif', [RelawanController::class, 'statusNonAktif'])->name('relawan.statusNonAktif');
 
-        Route::resource('dpd', DpdController::class)->only('index');
+        // Route::get('dpd', [DpdController::class, 'index'])->name('dpd.index');
+        Route::resource('dpd', DpdController::class)->only('index', 'destroy');
+        Route::get('dpd/daftar-daerah', [DpdController::class, 'indexdaerah'])->name('dpd.indexdaerah');
+        Route::get('dpd/tambah-daerah', [DpdController::class, 'createdaerah'])->name('dpd.createdaerah');
+        Route::post('dpd/tambah-daerah', [DpdController::class, 'storedaerah'])->name('dpd.storedaerah');
+        Route::delete('dpd/{slug}/delete-daerah', [DpdController::class, 'deletedaerah'])->name('dpd.deletedaerah');
+        Route::delete('dpd/{slug}/kosongkan-daerah', [DpdController::class, 'kosongkandaerah'])->name('dpd.kosongkandaerah');
+        Route::get('dpd/{slug}', [DpdController::class, 'daerah'])->name('dpd.daerah');
+        Route::get('dpd/{daerah}/tambah', [DpdController::class, 'create'])->name('dpd.create');
+        Route::post('dpd/{daerah}/tambah', [DpdController::class, 'store'])->name('dpd.store');
         Route::match(['patch', 'put'], 'dpd/{dpd}/updateJabatan', [DpdController::class, 'updateJabatan'])->name('dpd.updateJabatan');
-        Route::resource('dpp', DppController::class)->only('index');
+        Route::match(['patch', 'put'], 'dpd/{dpd}/updateAkses', [DpdController::class, 'updateAkses'])->name('dpd.updateAkses');
+        Route::match(['patch', 'put'], 'dpd/{dpd}/updateDaerah', [DpdController::class, 'updateDaerah'])->name('dpd.updateDaerah');
+        Route::resource('dpp', DppController::class)->only('index', 'destroy');
         Route::match(['patch', 'put'], 'dpp/{dpp}/updateJabatan', [DppController::class, 'updateJabatan'])->name('dpp.updateJabatan');
+        Route::match(['patch', 'put'], 'dpp/{dpp}/updateAkses', [DppController::class, 'updateAkses'])->name('dpp.updateAkses');
 
         Route::get('tambah-staff/1', [StaffController::class, 'createStep1'])->name('staff.create.step-1');
         Route::post('tambah-staff/1', [StaffController::class, 'storeStep1'])->name('staff.store.step-1');
@@ -99,7 +134,42 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('staff', StaffController::class)->except('create');
         Route::match(['patch', 'put'], 'staff/{staff}/statusAktif', [StaffController::class, 'statusAktif'])->name('staff.statusAktif');
         Route::match(['patch', 'put'], 'staff/{staff}/statusNonAktif', [StaffController::class, 'statusNonAktif'])->name('staff.statusNonAktif');
+
+        Route::resource('pelanggan', PelangganController::class);
+        Route::resource('bendahara', BendaharaController::class);
+        Route::resource('humas', HumasController::class);
+        Route::resource('korlap', KorlapController::class);
+    });
+    Route::group(['middleware' => ['role:1,2,3']], function () {
+        Route::resource('anggaranDasar', AnggaranDasarController::class);
+        Route::resource('anggaranRumahTangga', AnggaranRumahTanggaController::class);
     });
     Route::resource('pengumuman', PengumumanController::class);
     Route::resource('kartuTandaAnggota', KartuTandaAnggotaController::class);
+});
+
+Route::group(['middleware' => ['auth:user,pelanggan']], function () {
+    Route::get('edit-pelangganProfile', [ProfilePelangganController::class, 'editProfile'])->name('profilePelanggan.editProfile');
+    Route::resource('profilePelanggan', ProfilePelangganController::class);
+    Route::resource('kartuPelanggan', KartuPelangganController::class);
+    Route::match(['patch', 'put'], '/generalCleaning/{generalCleaning}/updateAprove', [GeneralCleaningController::class, 'updateAprove'])->name('generalCleaning.updateAprove');
+    Route::resource('generalCleaning', GeneralCleaningController::class);
+    Route::match(['patch', 'put'], '/serviceAc/{serviceAc}/updateAprove', [ServiceAirConditionerController::class, 'updateAprove'])->name('serviceAc.updateAprove');
+    Route::resource('serviceAc', ServiceAirConditionerController::class);
+    Route::match(['patch', 'put'], '/pemasanganCctv/{pemasanganCctv}/updateAprove', [PemasanganCctvController::class, 'updateAprove'])->name('pemasanganCctv.updateAprove');
+    Route::resource('pemasanganCctv', PemasanganCctvController::class);
+    Route::match(['patch', 'put'], '/pengecatan/{pengecatan}/updateAprove', [PengecatanController::class, 'updateAprove'])->name('pengecatan.updateAprove');
+    Route::resource('pengecatan', PengecatanController::class);
+    Route::match(['patch', 'put'], '/layanan/{layanan}/updateAprove', [LayananController::class, 'updateAprove'])->name('layanan.updateAprove');
+    Route::resource('layanan', LayananController::class);
+});
+
+Route::group(['middleware' => ['auth:user']], function () {
+    Route::group(['middleware' => ['role:1,2,3']], function () {
+        Route::resource('kategori', KategoriController::class);
+        Route::resource('rekening', RekeningBankController::class);
+        Route::resource('transaksi', TransaksiController::class);
+        Route::get('laporan', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::post('laporan', [LaporanController::class, 'index'])->name('laporan.filter');
+    });
 });
