@@ -135,7 +135,11 @@ Route::group(['middleware' => ['auth:user,pelanggan']], function () {
         Route::match(['patch', 'put'], 'staff/{staff}/statusAktif', [StaffController::class, 'statusAktif'])->name('staff.statusAktif');
         Route::match(['patch', 'put'], 'staff/{staff}/statusNonAktif', [StaffController::class, 'statusNonAktif'])->name('staff.statusNonAktif');
 
+        Route::get('pelanggan-non-aktif', [PelangganController::class, 'userNonAktif'])->name('pelanggan.userNonAktif');
+        Route::get('pelanggan-pending', [PelangganController::class, 'userPending'])->name('pelanggan.userPending');
         Route::resource('pelanggan', PelangganController::class);
+        Route::match(['patch', 'put'], 'pelanggan/{pelanggan}/statusAktif', [PelangganController::class, 'statusAktif'])->name('pelanggan.statusAktif');
+        Route::match(['patch', 'put'], 'pelanggan/{pelanggan}/statusNonAktif', [PelangganController::class, 'statusNonAktif'])->name('pelanggan.statusNonAktif');
         Route::resource('bendahara', BendaharaController::class);
         Route::resource('humas', HumasController::class);
         Route::resource('korlap', KorlapController::class);

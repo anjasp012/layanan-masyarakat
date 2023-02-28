@@ -34,8 +34,16 @@
                             <td>{{ $data->tanggal_jam_pelaksanaan }}</td>
                             <td>{{ $data->ada_persediaan_tangga == 1 ? 'Ada' : 'Tidak Ada'}}</td>
                             <td>
-                                <p class="fw-bold text-capitalize {{ $data->status_aprove == 'ditolak' ? 'text-danger' : '' }}{{ $data->status_aprove == 'disetujui' ? 'text-success' : '' }}">
-                                    {{ $data->status_aprove }}
+                                <p class="fw-bold text-capitalize {{ !$data->aprove_humas ? 'text-info' : '' }}">
+                                    @if ($data->aprove_humas == '0' || $data->aprove_korlap == '0' || $data->aprove_admin == '0')
+                                        Di tolak
+                                    @elseif ($data->aprove_admin == '1')
+                                        Di Setujui
+                                    @elseif ($data->aprove_korlap == '1')
+                                        Survey Ke Lokasi
+                                    @elseif ($data->aprove_humas == '1')
+                                        Progress
+                                    @endif
                                 </p>
                             </td>
                             @if (auth()->user()->role_id)

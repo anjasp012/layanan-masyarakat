@@ -74,3 +74,17 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+    <script>
+        @if(Session::has('success'))
+            Swal.fire({
+            title: 'Berhasil Membuat Akun',
+            text: 'Silahkan Cek Email Anda',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+            })
+        @endif
+        </script>
+    @endsection

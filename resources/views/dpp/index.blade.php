@@ -52,7 +52,7 @@
                                     @method('PATCH')
                                     <div class="d-flex gap-1">
                                         <select name="hak_akses_id" id="hak_akses_id" class="form-select form-select-sm w-50">
-                                                <option value=null></option>
+                                                <option value=null>NO AKSES</option>
                                             @foreach ($hakAkses as $item)
                                                 <option {{ ( $item->id == $data->hak_akses_id) ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->nama_hak_akses }}</option>
                                             @endforeach

@@ -33,7 +33,7 @@
         @auth
             <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
                 <!-- Navbar Brand-->
-                <a class="navbar-brand ps-3" href="index.html">E-KTA FPU</a>
+                <a class="navbar-brand ps-3" href="{{ route('dashboard') }}">E-KTA FPU</a>
                 <!-- Sidebar Toggle-->
                 <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
                 <!-- Navbar Search-->
@@ -92,28 +92,20 @@
         <div id="app" class="sb-nav-fixed @if(!auth()->user()->role_id) d-md-none d-block @endif" style="font-size: 14px">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
-                <a class="navbar-brand" href="#">Assalamualaikum Wr Wb <br> Selamat Datang, {{ auth()->user()->nama_pengurus }}</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link{{ Request::routeIs('dashboard') ? '' : ' active' }}" aria-current="page" href="{{ route('dashboard') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{{ Request::routeIs('profilePelanggan.*') ? '' : ' active' }}" aria-current="page" href="{{ route('profilePelanggan.index') }}">Profile</a>
-                    </li>
-                    {{-- <li class="nav-item"> --}}
-                        <form action="{{ route('logout') }}" method="POST" class="nav-item">
-                            @csrf
-                            <button type="submit" class="nav-link active bg-transparent border-0">Logout</button>
-                        </form>
-                    {{-- </li> --}}
-                    </ul>
-                </div>
+                    <a class="navbar-brand" href="#">Assalamualaikum Wr Wb <br> Selamat Datang, {{ auth()->user()->nama_pengurus }}</a>
+                    <button class="navbar-toggler" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                 </div>
             </nav>
+            <div class="offcanvas offcanvas-start bg-dark navbar-dark w-75" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header px-0">
+                    <a class="navbar-brand ps-3" href="{{ route('dashboard') }}">E-KTA FPU</a>
+                </div>
+                <div class="offcanvas-body p-0">
+                    @include('layouts.offcanvas-body')
+                </div>
+            </div>
             <div class="mt-4 container-fluid">
                 @yield('content-mobile')
             </div>

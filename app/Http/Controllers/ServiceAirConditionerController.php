@@ -16,12 +16,14 @@ class ServiceAirConditionerController extends Controller
     {
         if (!auth()->user()->role_id) {
             $serviceAirConditioner = ServiceAirConditioner::where('pelanggan_id', auth()->user()->id)->get();
-        }
-        elseif (auth()->user()->hak_akses_id == 3) {
-            $serviceAirConditioner = ServiceAirConditioner::where('humas_aprove', 1)->get();
-        } else {
+        } elseif (auth()->user()->hak_akses_id == 3) {
             $serviceAirConditioner = ServiceAirConditioner::all();
-        }
+        } elseif (auth()->user()->hak_akses_id == 2) {
+            $serviceAirConditioner = ServiceAirConditioner::where('aprove_humas', '1')->get();
+        } elseif (auth()->user()->role_id == 1) {
+            $serviceAirConditioner = ServiceAirConditioner::where('aprove_korlap', '1')->get();
+        };
+
         $data = [
             'datas' => $serviceAirConditioner,
             'actived' => 'Data Service Air Conditioner',
@@ -104,10 +106,12 @@ class ServiceAirConditionerController extends Controller
 
     public function updateAprove(Request $request, ServiceAirConditioner $serviceAirConditioner)
     {
-        if (auth()->user()->hak_akses_id == 2) {
-            $inputVal['humas_aprove'] = $request->status_aprove;
-        } elseif (auth()->user()->hak_akses_id == 3) {
-            $inputVal['korlap_aprove'] = $request->status_aprove;
+        if (auth()->user()->hak_akses_id == 3) {
+            $inputVal['aprove_humas'] = $request->status_aprove;
+        } elseif (auth()->user()->hak_akses_id == 2) {
+            $inputVal['aprove_korlap'] = $request->status_aprove;
+        } elseif (auth()->user()->role_id == 1) {
+            $inputVal['aprove_admin'] = $request->status_aprove;
         };
 
         try {

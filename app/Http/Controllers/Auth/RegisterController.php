@@ -56,7 +56,8 @@ class RegisterController extends Controller
 
     public function registerPelangganStore(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
                 'nama_pengurus' => ['required'],
                 'alamat_rumah_pengurus' => ['required'],
                 'no_hp' => ['required', 'unique:pelanggans,no_hp'],
@@ -64,9 +65,13 @@ class RegisterController extends Controller
                 'password' => 'required',
                 'photo_diri' => ['required'],
                 'nama_rumah_ibadah' => ['required'],
+                'id_provinsi' => ['required'],
+                'id_kota' => ['required'],
+                'id_kecamatan' => ['required'],
+                'id_kelurahan' => ['required'],
+                'rt_rw' => ['required'],
                 'alamat_rumah_ibadah' => ['required'],
                 'alamat_lengkap_rumah_ibadah' => ['required'],
-                'photo_rumah_ibadah' => ['required'],
                 'photo_rumah_ibadah' => ['required'],
             ],
             [
@@ -75,6 +80,7 @@ class RegisterController extends Controller
             ]
         );
 
+        $inputVal['aktif'] = '2';
         $inputVal['password'] = Hash::make($request->password);
         if ($request->has('photo_diri')) {
             $photoDiri = "photo-diri-" . time() . '.' . request()->photo_diri->getClientOriginalExtension();
@@ -86,11 +92,14 @@ class RegisterController extends Controller
             $request->photo_rumah_ibadah->storeAs('public/pelanggan/photo-rumah-ibadah', $photoRumahIbadah);
             $inputVal['photo_rumah_ibadah'] = $photoRumahIbadah;
         }
-        $inputVal['no_pelanggan'] = 'P-'.date('dmY') .str_pad(Pelanggan::next(), 4, '0', STR_PAD_LEFT);
+        $inputVal['no_pelanggan'] = '';
 
         try {
-            Pelanggan::create($inputVal);
-            return redirect(route('login'));
+            $pelanggan = Pelanggan::create($inputVal);
+            Notification::route('mail', [
+                $pelanggan->email => $pelanggan->nama_pengurus,
+            ])->notify(new registerNotification($pelanggan));
+            return redirect()->route('login')->with('success', 'Berhasil Membuat Akun');
         } catch (\Throwable $th) {
             dd($th);
         }
@@ -267,6 +276,6 @@ class RegisterController extends Controller
             $registerUser->email => $registerUser->nama_lengkap,
         ])->notify(new registerNotification($registerUser));
         $request->session()->forget('registerUser');
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Berhasil Membuat Akun');
     }
 }

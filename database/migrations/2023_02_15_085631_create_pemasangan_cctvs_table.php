@@ -15,6 +15,7 @@ class CreatePemasanganCctvsTable extends Migration
     {
         Schema::create('pemasangan_cctvs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pelanggan_id')->constrained('pelanggans', 'id');
             $table->string('nama_pemohon');
             $table->string('nama_rumah_ibadah');
             $table->string('alamat_rumah_ibadah');
@@ -23,7 +24,9 @@ class CreatePemasanganCctvsTable extends Migration
             $table->boolean('ada_persediaan_tangga');
             $table->integer('jumlah_pasang');
             $table->string('file_pendukung');
-            $table->string('status_aprove')->nullable();
+            $table->boolean('aprove_humas')->nullable();
+            $table->boolean('aprove_korlap')->nullable();
+            $table->boolean('aprove_admin')->nullable();
             $table->timestamps();
         });
     }

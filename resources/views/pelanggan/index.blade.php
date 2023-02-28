@@ -29,8 +29,27 @@
                             <td>{{ $data->no_hp }}</td>
                             <td>{{ $data->nama_rumah_ibadah }}</td>
                             <td>{{ $data->alamat_lengkap_rumah_ibadah }}</td>
-                            <td><a class="btn btn-warning btn-sm" href="{{ route('pelanggan.edit', $data->id) }}"><i class="fas fa-edit"></i></a>
-                                <a class="btn btn-info btn-sm" href="{{ route('pelanggan.show', $data->id) }}"><i class="fas fa-info-circle"></i></a></td>
+                            <td>
+                                @if ($data->aktif == 1)
+                                    <form action="{{ route('pelanggan.statusNonAktif', $data->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="text" name="aktif" value="0" hidden>
+                                        <button type="submit" class="btn btn-sm btn-danger">OFF</button>
+                                        <a class="btn btn-warning btn-sm" href="{{ route('pelanggan.edit', $data->id) }}"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-info btn-sm" href="{{ route('pelanggan.show', $data->id) }}"><i class="fas fa-info-circle"></i></a></td>
+                                    </form>
+                                @else
+                                    <form class="d-inline-block" action="{{ route('pelanggan.statusAktif', $data->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="text" name="aktif" value="1" hidden>
+                                        <button type="submit" class="btn btn-sm btn-success">Aktifkan</button>
+                                        <a class="btn btn-warning btn-sm" href="{{ route('pelanggan.edit', $data->id) }}"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-info btn-sm" href="{{ route('pelanggan.show', $data->id) }}"><i class="fas fa-info-circle"></i></a></td>
+                                    </form>
+                                @endif
+
                         </tr>
                     @endforeach
                 </tbody>

@@ -19,10 +19,15 @@ class CreatePelanggansTable extends Migration
             $table->string('alamat_rumah_pengurus');
             $table->string('no_hp')->unique();
             $table->string('email')->unique();
-            // $table->integer('aktif')->nullable()->comment('1 = Y, 2 = P, 0 = T');
+            $table->integer('aktif')->nullable()->comment('1 = Y, 2 = P, 0 = T');
             $table->string('password');
             $table->string('photo_diri')->nullable();
             $table->string('nama_rumah_ibadah');
+            $table->foreignId('id_provinsi')->constrained('indonesia_provinces', 'id');
+            $table->foreignId('id_kota')->constrained('indonesia_cities', 'id');
+            $table->foreignId('id_kecamatan')->constrained('indonesia_districts', 'id');
+            $table->foreignId('id_kelurahan')->constrained('indonesia_villages', 'id');
+            $table->string('rt_rw');
             $table->string('alamat_rumah_ibadah');
             $table->string('alamat_lengkap_rumah_ibadah');
             $table->string('photo_rumah_ibadah');

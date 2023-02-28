@@ -17,11 +17,11 @@ class GeneralCleaningController extends Controller
         if (!auth()->user()->role_id) {
             $generalCleaning = GeneralCleaning::where('pelanggan_id', auth()->user()->id)->get();
         } elseif (auth()->user()->hak_akses_id == 3) {
-            $generalCleaning = GeneralCleaning::where('status_aprove', '!=', 'menunggu')->get();
-        } elseif (auth()->user()->hak_akses_id == 2) {
             $generalCleaning = GeneralCleaning::all();
+        } elseif (auth()->user()->hak_akses_id == 2) {
+            $generalCleaning = GeneralCleaning::where('aprove_humas', '1')->get();
         } elseif (auth()->user()->role_id == 1) {
-            $generalCleaning = GeneralCleaning::where('status_aprove', '!=', 'menunggu')->where('status_aprove', '!=', 'progres')->get();
+            $generalCleaning = GeneralCleaning::where('aprove_korlap', '1')->get();
         };
         $data = [
             'datas' => $generalCleaning,
@@ -104,14 +104,12 @@ class GeneralCleaningController extends Controller
 
     public function updateAprove(Request $request, GeneralCleaning $generalCleaning)
     {
-        if ($request->status_aprove == 0) {
-            $inputVal['status_aprove'] = 'ditolak';
+        if (auth()->user()->hak_akses_id == 3) {
+            $inputVal['aprove_humas'] = $request->status_aprove;
         } elseif (auth()->user()->hak_akses_id == 2) {
-            $inputVal['status_aprove'] = 'progres';
-        } elseif (auth()->user()->hak_akses_id == 3) {
-            $inputVal['status_aprove'] = 'survey lokasi';
+            $inputVal['aprove_korlap'] = $request->status_aprove;
         } elseif (auth()->user()->role_id == 1) {
-            $inputVal['status_aprove'] = 'disetujui';
+            $inputVal['aprove_admin'] = $request->status_aprove;
         };
 
         try {

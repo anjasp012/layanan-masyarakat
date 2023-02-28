@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
+use App\Notifications\aktifasiNotification;
+use App\Notifications\nonAktifNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 class PelangganController extends Controller
 {
@@ -16,7 +19,26 @@ class PelangganController extends Controller
     public function index()
     {
         $data = [
-            'datas' => Pelanggan::all(),
+            'datas' => Pelanggan::where('aktif', 1)->get(),
+            'actived' => 'Staff Aktif',
+        ];
+        return view('pelanggan.index', $data);
+    }
+
+    public function userNonAktif()
+    {
+        $data = [
+            'datas' => Pelanggan::where('aktif', 0)->get(),
+            'actived' => 'Staff NonAktif',
+        ];
+        return view('pelanggan.index', $data);
+    }
+
+    public function userPending()
+    {
+        $data = [
+            'datas' => Pelanggan::where('aktif', 2)->get(),
+            'actived' => 'Staff Pending',
         ];
         return view('pelanggan.index', $data);
     }
@@ -39,7 +61,8 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
-        $inputVal = $request->validate([
+        $inputVal = $request->validate(
+            [
             'nama_pengurus' => ['required'],
             'alamat_rumah_pengurus' => ['required'],
             'no_hp' => ['required', 'unique:pelanggans,no_hp'],
@@ -51,10 +74,10 @@ class PelangganController extends Controller
             'alamat_lengkap_rumah_ibadah' => ['required'],
             'photo_rumah_ibadah' => ['required'],
         ],
-        [
-            'required'  => ':attribute Harus di isi.',
-            'unique'    => 'Maaf :attribute anda sudah terdaftar'
-            ]
+            [
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+                ]
         );
 
         $inputVal['password'] = Hash::make($request->password);
@@ -112,6 +135,55 @@ class PelangganController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+
+    public function statusAktif(Request $request, $id)
+    {
+        $pelanggan = Pelanggan::where('id', $id)->firstOrFail();
+        $inputVal = $request->validate(
+            [
+            'aktif' => 'required'
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
+        $inputVal['no_pelanggan'] = 'P-'.date('dmY') .str_pad($id, 4, '0', STR_PAD_LEFT);
+        try {
+            $pelanggan->update($inputVal);
+            Notification::route('mail', [
+                $pelanggan->email => $pelanggan->nama_pengurus,
+            ])->notify(new aktifasiNotification());
+            return redirect()->back();
+        } catch (\Exception $th) {
+            return redirect()->back();
+        }
+    }
+    public function statusNonAktif(Request $request, $id)
+    {
+        $pelanggan = Pelanggan::where('id', $id)->firstOrFail();
+        $inputVal = $request->validate(
+            [
+            'aktif' => 'required'
+        ],
+            [
+                'accepted'  => 'Ceklis terlebih dahulu',
+                'required'  => ':attribute Harus di isi.',
+                'unique'    => 'Maaf :attribute anda sudah terdaftar'
+            ]
+        );
+        try {
+            $pelanggan->update($inputVal);
+            Notification::route('mail', [
+                $pelanggan->email => $pelanggan->nama_pengurus,
+            ])->notify(new nonAktifNotification());
+            return redirect()->back();
+        } catch (\Exception $th) {
+            return redirect()->back();
+        }
     }
 
     /**

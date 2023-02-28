@@ -119,50 +119,17 @@
                                 <td>{{ $data->tanggal_jam_pelaksanaan }}</td>
                                 <td>{{ $data->ada_persediaan_tangga }}</td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Cek Status
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a class="dropdown-item" href="#">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label class="form-check-label">
-                                                                Humas
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            @if ($data->humas_aprove !== null)
-                                                                <div class="btn btn-sm {{ $data->humas_aprove === 0 ? 'btn-danger' : 'btn-success' }} d-block" title="{{ $data->humas_aprove === 0 ? 'Ditolak' : 'Disetujui' }}"><i class="fas {{ $data->humas_aprove === 0 ? 'fa-times' : 'fa-check' }}"></i></div>
-                                                            @else
-                                                                <div class="btn btn-sm btn-outline-secondary d-block" title="Tunggu"><i class="fas fa-clock"></i></div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label class="form-check-label">
-                                                                Korlap
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            {{-- {{ $data->korlap_aprove }} --}}
-                                                            @if ($data->korlap_aprove !== null)
-                                                                <div class="btn btn-sm {{ $data->korlap_aprove === 0 ? 'btn-danger' : 'btn-success' }} d-block" title="{{ $data->korlap_aprove === 0 ? 'Ditolak' : 'Disetujui' }}"><i class="fas {{ $data->korlap_aprove === 0 ? 'fa-times' : 'fa-check' }}"></i></div>
-                                                            @else
-                                                                <div class="btn btn-sm btn-outline-secondary d-block"><i class="fas fa-clock"></i></div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <p class="fw-bold text-capitalize {{ !$data->aprove_humas ? 'text-info' : '' }}">
+                                        @if ($data->aprove_humas == '0' || $data->aprove_korlap == '0' || $data->aprove_admin == '0')
+                                            Di tolak
+                                        @elseif ($data->aprove_admin == '1')
+                                            Di Setujui
+                                        @elseif ($data->aprove_korlap == '1')
+                                            Survey Ke Lokasi
+                                        @elseif ($data->aprove_humas == '1')
+                                            Progress
+                                        @endif
+                                    </p>
                                 </td>
                                 <td>
                                     {{-- <a class="btn btn-warning btn-sm" href="{{ route('pemasanganCctv.edit', $data->id) }}"><i class="fas fa-edit"></i></a> --}}

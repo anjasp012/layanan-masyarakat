@@ -16,12 +16,14 @@ class PemasanganCctvController extends Controller
     {
         if (!auth()->user()->role_id) {
             $pemasanganCctv = PemasanganCctv::where('pelanggan_id', auth()->user()->id)->get();
-        }
-        elseif (auth()->user()->hak_akses_id == 3) {
-            $pemasanganCctv = PemasanganCctv::where('humas_aprove', 1)->get();
-        } else {
+        } elseif (auth()->user()->hak_akses_id == 3) {
             $pemasanganCctv = PemasanganCctv::all();
-        }
+        } elseif (auth()->user()->hak_akses_id == 2) {
+            $pemasanganCctv = PemasanganCctv::where('aprove_humas', '1')->get();
+        } elseif (auth()->user()->role_id == 1) {
+            $pemasanganCctv = PemasanganCctv::where('aprove_korlap', '1')->get();
+        };
+
         $data = [
             'datas' => $pemasanganCctv,
             'actived' => 'Data Request Pemasangan Cctv',
@@ -108,10 +110,12 @@ class PemasanganCctvController extends Controller
 
     public function updateAprove(Request $request, PemasanganCctv $pemasanganCctv)
     {
-        if (auth()->user()->hak_akses_id == 2) {
-            $inputVal['humas_aprove'] = $request->status_aprove;
-        } elseif (auth()->user()->hak_akses_id == 3) {
-            $inputVal['korlap_aprove'] = $request->status_aprove;
+        if (auth()->user()->hak_akses_id == 3) {
+            $inputVal['aprove_humas'] = $request->status_aprove;
+        } elseif (auth()->user()->hak_akses_id == 2) {
+            $inputVal['aprove_korlap'] = $request->status_aprove;
+        } elseif (auth()->user()->role_id == 1) {
+            $inputVal['aprove_admin'] = $request->status_aprove;
         };
 
         try {

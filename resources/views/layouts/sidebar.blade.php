@@ -66,7 +66,7 @@
                                 <a class="nav-link{{ Request::routeIs('staff.userPending') || Request::routeIs('staff.show') ? ' active' : '' }}" href="{{ route('staff.userPending') }}">Staff Pending</a>
                             </nav>
                         </div>
-                        <a class="nav-link collapsed{{ Request::routeIs('staff.*') ? ' active' : '' }}" href="#" data-bs-toggle="collapse" data-bs-target="#pelanggan" aria-expanded="false" aria-controls="collapseLayouts">
+                        <a class="nav-link collapsed{{ Request::routeIs('pelanggan.*') ? ' active' : '' }}" href="#" data-bs-toggle="collapse" data-bs-target="#pelanggan" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             pelanggan
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -74,9 +74,11 @@
                         <div class="collapse{{ Request::routeIs('pelanggan.*') ? ' show' : '' }}" id="pelanggan" aria-labelledby="pelanggan" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 @if (auth()->user()->role_id == 1)
-                                    <a class="nav-link{{ Request::routeIs('pelanggan.create.*') ? ' active' : '' }}" href="{{ route('pelanggan.create') }}">Add pelanggan</a>
+                                    <a class="nav-link{{ Request::routeIs('pelanggan.create') ? ' active' : '' }}" href="{{ route('pelanggan.create') }}">Add Pelanggan</a>
                                 @endif
-                                <a class="nav-link{{ Request::routeIs('pelanggan.index') || Request::routeIs('pelanggan.show') ? ' active' : '' }}" href="{{ route('pelanggan.index') }}">Semua pelanggan</a>
+                                <a class="nav-link{{ Request::routeIs('pelanggan.index') || Request::routeIs('pelanggan.show') ? ' active' : '' }}" href="{{ route('pelanggan.index') }}">Pelanggan Aktif</a>
+                                <a class="nav-link{{ Request::routeIs('pelanggan.userNonAktif') || Request::routeIs('pelanggan.show') ? ' active' : '' }}" href="{{ route('pelanggan.userNonAktif') }}">Pelanggan Non Aktif</a>
+                                <a class="nav-link{{ Request::routeIs('pelanggan.userPending') || Request::routeIs('pelanggan.show') ? ' active' : '' }}" href="{{ route('pelanggan.userPending') }}">Pelanggan Pending</a>
                             </nav>
                         </div>
                     @endif
